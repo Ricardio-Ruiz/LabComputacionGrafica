@@ -14,7 +14,7 @@
 //Creación de la ventana
 void resize(GLFWwindow* window, int width, int height);
 
-const GLint WIDTH = 800, HEIGHT = 600;
+const GLint WIDTH = 800, HEIGHT = 800;
 
 
 int main() {
@@ -26,7 +26,7 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);*/
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Dibujo de Primitivas en 2D", NULL, NULL);
+	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Dibujo de Primiti vas en 2D", NULL, NULL);
 	glfwSetFramebufferSizeCallback(window, resize);
 	
 	//Verificaci�n de errores de creacion  ventana
@@ -66,10 +66,10 @@ int main() {
 	// Set up vertex data (and buffer(s)) and attribute pointers
 	float vertices[] = {
 		//poscición				color
-		0.5f,  0.5f, 0.0f,    1.0f,0.0f,0.0f,  // top right
-		0.5f, -0.5f, 0.0f,    1.0f,1.0f,0.0f,  // bottom right
-		-0.5f, -0.5f, 0.0f,   1.0f,0.0f,1.0f,  // bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f,1.0f,0.0f, // top left 
+		//0.5f,  0.5f, 0.0f,    1.0f,0.0f,0.0f,  // top right
+		//0.5f, -0.5f, 0.0f,    1.0f,1.0f,0.0f,  // bottom right
+		//-0.5f, -0.5f, 0.0f,   1.0f,0.0f,1.0f,  // bottom left
+		//-0.5f,  0.5f, 0.0f,   1.0f,1.0f,0.0f, // top left 
 
 		//0.9f,  0.8f, 0.0f,    0.486f,0.733f,0.0f,  // top right
 		//0.4f, -0.76f, 0.0f,    1.0f,0.733f,0.0f,  // bottom right
@@ -85,6 +85,37 @@ int main() {
 		//0.4f, -0.7f, 0.0f,    1.0f,0.733f,0.0f,  // bottom right
 		//-0.5f, -0.4f, 0.0f,   0.0f,0.631f,0.945f,  // bottom left
 		//-0.5f,  0.7f, 0.0f,   0.964f,0.325f,0.078f, // top left 
+
+		//Primer segmento
+		-0.28f,  0.7f, 0.0f,    0.96f,0.6f,0.643f,  
+		-0.01f,  0.66f, 0.0f,    0.96f,0.6f,0.643f,
+		-0.143f,  0.458f, 0.0f,    0.96f,0.6f,0.643f,
+		-0.27f,  0.45f, 0.0f,    0.96f,0.6f,0.643f,
+		-0.29f,  0.28f, 0.0f,    0.96f,0.6f,0.643f,
+		-0.43f,  0.11f, 0.0f,    0.96f,0.6f,0.643f,
+		-0.65f,  0.16f, 0.0f,    0.96f,0.6f,0.643f,
+		-0.48f,  0.52f, 0.0f,    0.96f,0.6f,0.643f,		//0-7
+
+		//Swgundo swgmento
+		-0.01f,  0.66f, 0.0f,    0.96f,0.6f,0.643f,
+		0.14f,  0.44f, 0.0f,    0.96f,0.6f,0.643f,
+		-0.02f,  0.38f, 0.0f,    0.96f,0.6f,0.643f,
+		-0.143f,  0.458f, 0.0f,    0.96f,0.6f,0.643f,	//8-11
+
+		//Tercer segmento
+		-0.29f,  0.28f, 0.0f,    0.96f,0.6f,0.643f,
+		-0.22f,  0.218f, 0.0f,    0.96f,0.6f,0.643f,
+		-0.35f,  0.056f, 0.0f,    0.96f,0.6f,0.643f,
+		-0.43f,  0.11f, 0.0f,    0.96f,0.6f,0.643f,		//12-15
+
+		//0.5f,  0.5f, 0.0f,    0.96f,0.6f,0.643f,
+		//0.5f,  0.5f, 0.0f,    0.96f,0.6f,0.643f,
+		//0.5f,  0.5f, 0.0f,    0.96f,0.6f,0.643f,
+		//0.5f,  0.5f, 0.0f,    0.96f,0.6f,0.643f,
+		//0.5f,  0.5f, 0.0f,    0.96f,0.6f,0.643f,
+		//0.5f,  0.5f, 0.0f,    0.96f,0.6f,0.643f,
+		//0.5f,  0.5f, 0.0f,    0.96f,0.6f,0.643f,
+		//0.5f,  0.5f, 0.0f,    0.96f,0.6f,0.643f,
 
 	};
 	unsigned int indices[] = {  // note that we start from 0!
@@ -147,14 +178,24 @@ int main() {
         glBindVertexArray(VAO);
 
 
-        glPointSize(8);
-        glDrawArrays(GL_POINTS,0,4);		//dibuja cada punto
+        glPointSize(5);
+        glDrawArrays(GL_POINTS,0,50);		//dibuja cada punto
         
-        //glDrawArrays(GL_LINES,0,4);		//dibuja unión de 2 vertices
-        glDrawArrays(GL_LINE_LOOP,0,4);		//dibuja todo el cuadrado
+        //glDrawArrays(GL_LINES,0,50);		//dibuja unión de 2 vertices
+
+        //Primer segmento
+		glDrawArrays(GL_LINE_LOOP,0,8);		//dibuja todo el cuadrado
+
+		//Segundo segmento
+		glDrawArrays(GL_LINE_LOOP, 8, 4);		//dibuja todo el cuadrado
+
+		//Terfcer segmento
+		glDrawArrays(GL_LINE_LOOP, 12, 4);		//dibuja todo el cuadrado
+
+
 		//glDrawArrays(GL_LINE_LOOP, 0, 3);		//dibuja todo el cuadrado triangulo      
 
-        glDrawArrays(GL_TRIANGLES,0,3);		//dibuja triangulos
+        //glDrawArrays(GL_TRIANGLES,0,3);		//dibuja triangulos
         //glDrawElements(GL_TRIANGLES, 3,GL_UNSIGNED_INT,0);		//dibujando triangulos tomando vertice de inicio independientemente
 
         
