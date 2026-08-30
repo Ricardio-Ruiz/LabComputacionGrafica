@@ -1,7 +1,9 @@
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
 //Práctica #2 							              Ruiz Vargas Ricardo
 //Fecha de entrega: 30 de agosto de 2026 				        316226068
+//
 //
 
 #include<iostream>
