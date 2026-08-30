@@ -1,3 +1,9 @@
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//Práctica #2 							              Ruiz Vargas Ricardo
+//Fecha de entrega: 30 de agosto de 2026 				        316226068
+//
+
 #include<iostream>
 
 //#define GLEW_STATIC
@@ -14,7 +20,7 @@
 //Creación de la ventana
 void resize(GLFWwindow* window, int width, int height);
 
-const GLint WIDTH = 800, HEIGHT = 600;
+const GLint WIDTH = 800, HEIGHT = 800;
 
 
 int main() {
@@ -26,11 +32,11 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);*/
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Dibujo de Primitivas en 2D", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Práctica 2 - Ricardo_Ruiz_Vargas", NULL, NULL);
 	glfwSetFramebufferSizeCallback(window, resize);
-	
+
 	//Verificaci�n de errores de creacion  ventana
-	if (window== NULL) 
+	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
@@ -57,19 +63,19 @@ int main() {
 
 	//++++++++++++++++++++++++++++++++++++++++++++++\/ \/ \/
 	//se cargan los archivos nuevos de vertices y fragmentos
-	
+
 	// Define las dimensiones del viewport
 	//glViewport(0, 0, screenWidth, screenHeight);
 
-    Shader ourShader("Shader/core.vs", "Shader/core.frag");
+	Shader ourShader("Shader/core.vs", "Shader/core.frag");
 
 	// Set up vertex data (and buffer(s)) and attribute pointers
 	float vertices[] = {
 		//poscición				color
-		0.5f,  0.5f, 0.0f,    1.0f,0.0f,0.0f,  // top right
-		0.5f, -0.5f, 0.0f,    1.0f,1.0f,0.0f,  // bottom right
-		-0.5f, -0.5f, 0.0f,   1.0f,0.0f,1.0f,  // bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f,1.0f,0.0f, // top left 
+		//0.5f,  0.5f, 0.0f,    1.0f,0.0f,0.0f,  // top right
+		//0.5f, -0.5f, 0.0f,    1.0f,1.0f,0.0f,  // bottom right
+		//-0.5f, -0.5f, 0.0f,   1.0f,0.0f,1.0f,  // bottom left
+		//-0.5f,  0.5f, 0.0f,   1.0f,1.0f,0.0f, // top left 
 
 		//0.9f,  0.8f, 0.0f,    0.486f,0.733f,0.0f,  // top right
 		//0.4f, -0.76f, 0.0f,    1.0f,0.733f,0.0f,  // bottom right
@@ -86,19 +92,429 @@ int main() {
 		//-0.5f, -0.4f, 0.0f,   0.0f,0.631f,0.945f,  // bottom left
 		//-0.5f,  0.7f, 0.0f,   0.964f,0.325f,0.078f, // top left 
 
+		// CABEZA - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		//Primer segmento
+		//	poscición				color
+		-0.28f, 0.7f,  0.0f,	0.96f,0.6f,0.643f,
+		-0.01f, 0.66f, 0.0f,    0.96f,0.6f,0.643f,
+		-0.143f,0.458f,0.0f,    0.96f,0.6f,0.643f,
+		-0.27f, 0.45f, 0.0f,    0.96f,0.6f,0.643f,
+		-0.29f, 0.28f, 0.0f,    0.96f,0.6f,0.643f,
+		-0.41f, 0.11f, 0.0f,    0.96f,0.6f,0.643f,
+		-0.65f, 0.16f, 0.0f,    0.96f,0.6f,0.643f,
+		-0.48f, 0.52f, 0.0f,    0.96f,0.6f,0.643f,		//0-7
+		//Swgundo swgmento
+		-0.01f, 0.66f,  0.0f,    0.96f,0.6f,0.643f,
+		0.14f,  0.44f,  0.0f,    0.96f,0.6f,0.643f,
+		-0.02f, 0.38f,  0.0f,    0.96f,0.6f,0.643f,
+		-0.143f,0.458f, 0.0f,    0.96f,0.6f,0.643f,		//8-11
+		//Tercer segmento
+		-0.29f, 0.28f,  0.0f,    0.96f,0.6f,0.643f,
+		-0.22f, 0.218f, 0.0f,    0.96f,0.6f,0.643f,
+		-0.35f, 0.056f, 0.0f,    0.96f,0.6f,0.643f,
+		-0.41f, 0.11f,  0.0f,    0.96f,0.6f,0.643f,		//12-15
+		//Cuarto segmento
+		0.14f,   0.44f,  0.0f,    0.866f,0.403f,0.427f,
+		0.078f,  0.21f,  0.0f,    0.866f,0.403f,0.427f,
+		-0.158f, 0.01f,  0.0f,    0.866f,0.403f,0.427f,
+		-0.305f, -0.07f, 0.0f,    0.866f,0.403f,0.427f,
+		-0.35f,  0.056f, 0.0f,    0.866f,0.403f,0.427f,
+		-0.22f,  0.218f, 0.0f,    0.866f,0.403f,0.427f,
+		-0.08f,  0.222f, 0.0f,    0.866f,0.403f,0.427f,
+		-0.02f,  0.38f,  0.0f,    0.866f,0.403f,0.427f,	//16-23
+		//Quinto segmento
+		-0.65f, 0.16f,   0.0f,    0.529f,0.756f,0.764f,
+		-0.41f, 0.11f,   0.0f,    0.529f,0.756f,0.764f,
+		-0.585f,-0.135f, 0.0f,    0.529f,0.756f,0.764f,
+		-0.739f,-0.098f, 0.0f,    0.529f,0.756f,0.764f,	//24-27
+		//Sexto segmento
+		-0.41f,  0.11f,  0.0f,    0.529f,0.756f,0.764f,
+		-0.35f,  0.056f, 0.0f,    0.529f,0.756f,0.764f,
+		-0.56f, -0.162f, 0.0f,    0.529f,0.756f,0.764f,
+		-0.585f,-0.135f, 0.0f,    0.529f,0.756f,0.764f,	//28-31
+		//Septimo segmento
+		-0.35f,  0.056f, 0.0f,    0.325f,0.549f,0.576f,
+		-0.305f,-0.07f,  0.0f,    0.325f,0.549f,0.576f,
+		-0.56f, -0.162f, 0.0f,    0.325f,0.549f,0.576f,	//32-34
+		//Octavo segmento
+		-0.739f, -0.098f, 0.0f,    0.529f,0.756f,0.764f,
+		-0.585f, -0.135f, 0.0f,    0.529f,0.756f,0.764f,
+		-0.56f,  -0.162f, 0.0f,    0.529f,0.756f,0.764f,
+		-0.72f,  -0.12f,  0.0f,    0.529f,0.756f,0.764f,//35-38
+
+		// CUERPO - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// Segmento 9
+		0.078f, 0.21f,	0.0f,    0.96f,0.6f,0.643f,
+		0.34f,  0.2f,   0.0f,    0.96f,0.6f,0.643f,
+		0.14f,  0.157f, 0.0f,    0.96f,0.6f,0.643f,		//39-41
+		0.14f,  0.157f, 0.0f,    0.866f,0.403f,0.427f,
+		-0.028f,0.12f,	0.0f,    0.866f,0.403f,0.427f,
+		0.078f, 0.21f,	0.0f,    0.866f,0.403f,0.427f,	//Sombra 42-44
+		// Segmento 10
+		0.34f,  0.2f,	0.0f,    0.96f,0.6f,0.643f,
+		0.46f,  0.08f,	0.0f,    0.96f,0.6f,0.643f,
+		0.07f, -0.37f,	0.0f,    0.96f,0.6f,0.643f,
+		0.12f, -0.09f,	0.0f,    0.96f,0.6f,0.643f,
+		0.065f,-0.01f,  0.0f,    0.96f,0.6f,0.643f,
+		0.14f,  0.157f, 0.0f,    0.96f,0.6f,0.643f, 	//45-50
+		0.14f,  0.157f, 0.0f,    0.866f,0.403f,0.427f,
+		0.065f,-0.01f,  0.0f,    0.866f,0.403f,0.427f,
+		-0.028f,0.12f,  0.0f,    0.866f,0.403f,0.427f,	//51-53
+		// Segmento 11
+		0.065f, -0.01f, 0.0f,    0.529f,0.756f,0.764f,
+		0.12f,  -0.09f, 0.0f,    0.529f,0.756f,0.764f,
+		0.07f,  -0.37f, 0.0f,    0.529f,0.756f,0.764f,
+		0.02f,  -0.12f, 0.0f,    0.529f,0.756f,0.764f,	//54-57
+		-0.028f, 0.12f, 0.0f,    0.325f, 0.549f, 0.576f,
+		0.065f, -0.01f, 0.0f,	 0.325f, 0.549f, 0.576f,
+		0.02f,  -0.12f, 0.0f,    0.325f, 0.549f, 0.576f,//Sombra 58-60
+		// Segmento 12
+		-0.028f, 0.12f, 0.0f,    0.325f, 0.549f, 0.576f,
+		0.07f,  -0.37f, 0.0f,    0.325f, 0.549f, 0.576f,
+		-0.085f,-0.34f, 0.0f,    0.325f, 0.549f, 0.576f,
+		0.03f,  -0.3f,  0.0f,    0.325f, 0.549f, 0.576f,
+		-0.33f, -0.1f,  0.0f,    0.325f, 0.549f, 0.576f,
+		-0.32f, -0.079f,0.0f,    0.325f, 0.549f, 0.576f,
+		-0.158f, 0.01f, 0.0f,    0.325f, 0.549f, 0.576f,	//61-67
+		-0.33f, -0.1f,  0.0f,    0.529f,0.756f,0.764f,
+		0.03f,  -0.3f,  0.0f,	 0.529f,0.756f,0.764f,
+		-0.085f,-0.34f, 0.0f,	 0.529f,0.756f,0.764f,
+		-0.4f,  -0.275f,0.0f,    0.529f,0.756f,0.764f,	//Luz 68-71
+		// Segmento 13
+		-0.4f,  -0.275f, 0.0f,   0.325f,0.549f,0.576f,
+		0.07f,  -0.37f,  0.0f,   0.325f,0.549f,0.576f,
+		0.158f, -0.545f, 0.0f,   0.325f,0.549f,0.576f,
+		-0.145f,-0.462f, 0.0f,   0.325f,0.549f,0.576f,	//72-75
+		// Segmento 14
+		0.46f,   0.08f,  0.0f,   0.866f,0.403f,0.427f,
+		0.49f,  -0.02f,  0.0f,   0.866f,0.403f,0.427f,
+		0.24f,  -0.46f,  0.0f,   0.866f,0.403f,0.427f,
+		0.158f, -0.545f, 0.0f,   0.866f,0.403f,0.427f,
+		0.07f,  -0.37f,  0.0f,   0.866f,0.403f,0.427f,	//76-80
+
+		// COLA PATAS - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// Segmento 15
+		0.44f, 0.79f,  0.0f,    0.529f,0.756f,0.764f,
+		0.52f, 0.78f,  0.0f,    0.529f,0.756f,0.764f,
+		0.42f, 0.28f,  0.0f,    0.529f,0.756f,0.764f,
+		0.21f, 0.208f, 0.0f,    0.529f,0.756f,0.764f,	//81-84
+		0.42f, 0.28f,  0.0f,    0.325f, 0.549f, 0.576f,
+		0.394f,0.149f, 0.0f,	0.325f, 0.549f, 0.576f,
+		0.34f, 0.202f, 0.0f,	0.325f, 0.549f, 0.576f,
+		0.21f, 0.208f, 0.0f,    0.325f, 0.549f, 0.576f,	//Sombra 85-88
+		// Segmento 16
+		0.52f,  0.78f,  0.0f,   0.325f,0.549f,0.576f,
+		0.55f,  0.74f,  0.0f,	0.325f,0.549f,0.576f,
+		0.49f, -0.02f,  0.0f,	0.325f,0.549f,0.576f,
+		0.46f,  0.08f,  0.0f,	0.325f,0.549f,0.576f,
+		0.394f, 0.149f, 0.0f,   0.325f,0.549f,0.576f,	//89-93
+		// Segmento 17
+		0.58f,  0.02f, 0.0f,    0.529f,0.756f,0.764f,
+		0.775f,-0.08f, 0.0f,    0.529f,0.756f,0.764f,
+		0.57f, -0.23f, 0.0f,    0.529f,0.756f,0.764f,
+		0.3f,  -0.1f,  0.0f,    0.529f,0.756f,0.764f,	//94-97
+		// Segmento 18
+		0.3f,  -0.1f,  0.0f,    0.529f,0.756f,0.764f,
+		0.57f, -0.23f, 0.0f,    0.529f,0.756f,0.764f,
+		0.45f, -0.69f, 0.0f,    0.529f,0.756f,0.764f,
+		0.22f, -0.58f, 0.0f,    0.529f,0.756f,0.764f,	//98-101
+		// Segmento 19
+		0.775f, -0.08f, 0.0f,   0.325f,0.549f,0.576f,
+		0.785f, -0.18f, 0.0f,   0.325f,0.549f,0.576f,
+		0.48f,  -0.76f, 0.0f,	0.325f,0.549f,0.576f,
+		0.45f,  -0.69f, 0.0f,	0.325f,0.549f,0.576f,
+		0.57f,  -0.23f, 0.0f,   0.325f,0.549f,0.576f,	//102-106
+		// Segmento 20
+		0.22f, -0.58f, 0.0f,	0.325f,0.549f,0.576f,
+		0.45f, -0.69f, 0.0f,	0.325f,0.549f,0.576f,
+		0.48f, -0.76f, 0.0f,	0.325f,0.549f,0.576f,
+		0.255f,-0.65f, 0.0f,    0.325f,0.549f,0.576f,	//107-110
+		// Segmento 21
+		-0.32f, -0.079f, 0.0f,  0.529f,0.756f,0.764f,
+		-0.4f,  -0.275f, 0.0f,  0.529f,0.756f,0.764f,
+		-0.3f,  -0.35f,  0.0f,  0.529f,0.756f,0.764f,
+		-0.31f, -0.44f,  0.0f,  0.529f,0.756f,0.764f,
+		-0.465f,-0.36f,  0.0f,  0.529f,0.756f,0.764f,
+		-0.435f,-0.12f,  0.0f,  0.529f,0.756f,0.764f,	//111-116
+		// Segmento 22
+		-0.3f, -0.35f, 0.0f,	0.325f,0.549f,0.576f,
+		-0.23f,-0.4f,  0.0f,	0.325f,0.549f,0.576f,
+		-0.27f,-0.46f, 0.0f,	0.325f,0.549f,0.576f,
+		-0.31f,-0.44f, 0.0f,    0.325f,0.549f,0.576f,	//117-120
+
+		// OJO - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// Segmento 23
+		-0.143f, 0.458f, 0.0f,	  1.0f,1.0f,1.0f,
+		-0.02f,  0.38f,  0.0f,    1.0f,1.0f,1.0f,
+		-0.08f,  0.222f, 0.0f,    1.0f,1.0f,1.0f,
+		-0.22f,  0.218f, 0.0f,    1.0f,1.0f,1.0f,
+		-0.29f,  0.28f,  0.0f,    1.0f,1.0f,1.0f,
+		-0.27f,  0.45f,  0.0f,    1.0f,1.0f,1.0f,		//121-126
+		// Segmento 24
+		-0.18f,  0.36f, 0.0f,	  0.0f,0.0f,0.0f,
+		-0.15f,  0.35f, 0.0f,     0.0f,0.0f,0.0f,
+		-0.14f,  0.32f, 0.0f,     0.0f,0.0f,0.0f,
+		-0.17f,  0.3f,  0.0f,     0.0f,0.0f,0.0f,
+		-0.20f,  0.33f, 0.0f,     0.0f,0.0f,0.0f,		//127-131
+
+		// LINEAS NEGRAS - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// CABEZA / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
+		//Primer segmento
+		//	poscición				color
+		-0.28f, 0.7f,  0.0f,	0.0f,0.0f,0.0f,
+		-0.01f, 0.66f, 0.0f,    0.0f,0.0f,0.0f,
+		-0.143f,0.458f,0.0f,    0.0f,0.0f,0.0f,
+		-0.27f, 0.45f, 0.0f,    0.0f,0.0f,0.0f,
+		-0.29f, 0.28f, 0.0f,    0.0f,0.0f,0.0f,
+		-0.41f, 0.11f, 0.0f,    0.0f,0.0f,0.0f,
+		-0.65f, 0.16f, 0.0f,    0.0f,0.0f,0.0f,
+		-0.48f, 0.52f, 0.0f,    0.0f,0.0f,0.0f,		//132-139
+		//Swgundo swgmento
+		-0.01f, 0.66f,  0.0f,    0.0f,0.0f,0.0f,
+		0.14f,  0.44f,  0.0f,    0.0f,0.0f,0.0f,
+		-0.02f, 0.38f,  0.0f,    0.0f,0.0f,0.0f,
+		-0.143f,0.458f, 0.0f,    0.0f,0.0f,0.0f,	//140-143
+		//Tercer segmento
+		-0.29f, 0.28f,  0.0f,    0.0f,0.0f,0.0f,
+		-0.22f, 0.218f, 0.0f,    0.0f,0.0f,0.0f,
+		-0.35f, 0.056f, 0.0f,    0.0f,0.0f,0.0f,
+		-0.41f, 0.11f,  0.0f,    0.0f,0.0f,0.0f,	//144-147
+		//Cuarto segmento
+		0.14f,   0.44f,  0.0f,    0.0f,0.0f,0.0f,
+		0.078f,  0.21f,  0.0f,    0.0f,0.0f,0.0f,
+		-0.158f, 0.01f,  0.0f,    0.0f,0.0f,0.0f,
+		-0.305f, -0.07f, 0.0f,    0.0f,0.0f,0.0f,
+		-0.35f,  0.056f, 0.0f,    0.0f,0.0f,0.0f,
+		-0.22f,  0.218f, 0.0f,    0.0f,0.0f,0.0f,
+		-0.08f,  0.222f, 0.0f,    0.0f,0.0f,0.0f,
+		-0.02f,  0.38f,  0.0f,    0.0f,0.0f,0.0f,	//148-155
+		//Quinto segmento
+		-0.65f, 0.16f,   0.0f,    0.0f,0.0f,0.0f,
+		-0.41f, 0.11f,   0.0f,    0.0f,0.0f,0.0f,
+		-0.585f,-0.135f, 0.0f,    0.0f,0.0f,0.0f,
+		-0.739f,-0.098f, 0.0f,    0.0f,0.0f,0.0f,	//156-159
+		//Sexto segmento
+		-0.41f,  0.11f,  0.0f,    0.0f,0.0f,0.0f,
+		-0.35f,  0.056f, 0.0f,    0.0f,0.0f,0.0f,
+		-0.56f, -0.162f, 0.0f,    0.0f,0.0f,0.0f,
+		-0.585f,-0.135f, 0.0f,    0.0f,0.0f,0.0f,	//160-163
+		//Septimo segmento
+		-0.35f,  0.056f, 0.0f,    0.0f,0.0f,0.0f,
+		-0.305f,-0.07f,  0.0f,    0.0f,0.0f,0.0f,
+		-0.56f, -0.162f, 0.0f,    0.0f,0.0f,0.0f,	//164-166
+		//Octavo segmento
+		-0.739f, -0.098f, 0.0f,   0.0f,0.0f,0.0f,
+		-0.585f, -0.135f, 0.0f,   0.0f,0.0f,0.0f,
+		-0.56f,  -0.162f, 0.0f,   0.0f,0.0f,0.0f,
+		-0.72f,  -0.12f,  0.0f,   0.0f,0.0f,0.0f,	//167-170
+		// CUERPO / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
+		// Segmento 9
+		0.078f, 0.21f,	0.0f,    0.0f,0.0f,0.0f,
+		0.34f,  0.2f,   0.0f,    0.0f,0.0f,0.0f,
+		-0.028f,0.12f,	0.0f,    0.0f,0.0f,0.0f,	//171-173
+		// Segmento 10
+		0.34f,  0.2f,	0.0f,    0.0f,0.0f,0.0f,
+		0.46f,  0.08f,	0.0f,    0.0f,0.0f,0.0f,
+		0.07f, -0.37f,	0.0f,    0.0f,0.0f,0.0f,
+		0.12f, -0.09f,	0.0f,    0.0f,0.0f,0.0f,
+		-0.028f,0.12f,  0.0f,    0.0f,0.0f,0.0f,	//174-178
+		// Segmento 11
+		0.12f,  -0.09f, 0.0f,    0.0f,0.0f,0.0f,
+		0.07f,  -0.37f, 0.0f,    0.0f,0.0f,0.0f,
+		-0.028f, 0.12f, 0.0f,    0.0f,0.0f,0.0f,	//179-181
+		// Segmento 12
+		-0.028f, 0.12f, 0.0f,    0.0f,0.0f,0.0f,
+		0.07f,  -0.37f, 0.0f,    0.0f,0.0f,0.0f,
+		-0.4f,	-0.275f,0.0f,    0.0f,0.0f,0.0f,
+		-0.32f, -0.079f,0.0f,    0.0f,0.0f,0.0f,
+		-0.158f, 0.01f, 0.0f,    0.0f,0.0f,0.0f,	//182-186
+		// Segmento 13
+		-0.4f,  -0.275f, 0.0f,   0.0f,0.0f,0.0f,
+		0.07f,  -0.37f,  0.0f,   0.0f,0.0f,0.0f,
+		0.158f, -0.545f, 0.0f,   0.0f,0.0f,0.0f,
+		-0.145f,-0.462f, 0.0f,   0.0f,0.0f,0.0f,	//187-190
+		// Segmento 14
+		0.46f,   0.08f,  0.0f,   0.0f,0.0f,0.0f,
+		0.49f,  -0.02f,  0.0f,   0.0f,0.0f,0.0f,
+		0.3f,  -0.1f,  0.0f,	 0.0f,0.0f,0.0f,	//191-193
+
+		0.3f,  -0.1f,  0.0f,	 0.0f,0.0f,0.0f,
+		0.24f,  -0.46f,  0.0f,   0.0f,0.0f,0.0f,
+		0.158f, -0.545f, 0.0f,   0.0f,0.0f,0.0f,
+		0.07f,  -0.37f,  0.0f,   0.0f,0.0f,0.0f,	//194-197
+		// COLA PATAS / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
+		// Segmento 15
+		0.44f, 0.79f,  0.0f,    0.0f,0.0f,0.0f,
+		0.52f, 0.78f,  0.0f,    0.0f,0.0f,0.0f,
+		0.394f,0.149f, 0.0f,	0.0f,0.0f,0.0f,
+		0.34f, 0.202f, 0.0f,	0.0f,0.0f,0.0f,
+		0.21f, 0.208f, 0.0f,    0.0f,0.0f,0.0f,		// 198-202
+		// Segmento 16
+		0.52f,  0.78f,  0.0f,   0.0f,0.0f,0.0f,
+		0.55f,  0.74f,  0.0f,	0.0f,0.0f,0.0f,
+		0.49f, -0.02f,  0.0f,	0.0f,0.0f,0.0f,
+		0.46f,  0.08f,  0.0f,	0.0f,0.0f,0.0f,
+		0.394f, 0.149f, 0.0f,   0.0f,0.0f,0.0f,		//203-207
+		// Segmento 17
+		0.58f,  0.02f, 0.0f,    0.0f,0.0f,0.0f,
+		0.775f,-0.08f, 0.0f,    0.0f,0.0f,0.0f,
+		0.57f, -0.23f, 0.0f,    0.0f,0.0f,0.0f,
+		0.3f,  -0.1f,  0.0f,    0.0f,0.0f,0.0f,		//208-211
+		// Segmento 18
+		0.3f,  -0.1f,  0.0f,    0.0f,0.0f,0.0f,
+		0.57f, -0.23f, 0.0f,    0.0f,0.0f,0.0f,
+		0.45f, -0.69f, 0.0f,    0.0f,0.0f,0.0f,
+		0.22f, -0.58f, 0.0f,    0.0f,0.0f,0.0f,		//212-215
+		// Segmento 19
+		0.775f, -0.08f, 0.0f,   0.0f,0.0f,0.0f,
+		0.785f, -0.18f, 0.0f,   0.0f,0.0f,0.0f,
+		0.48f,  -0.76f, 0.0f,	0.0f,0.0f,0.0f,
+		0.45f,  -0.69f, 0.0f,	0.0f,0.0f,0.0f,
+		0.57f,  -0.23f, 0.0f,   0.0f,0.0f,0.0f,		//216-220
+		// Segmento 20
+		0.22f, -0.58f, 0.0f,	0.0f,0.0f,0.0f,
+		0.45f, -0.69f, 0.0f,	0.0f,0.0f,0.0f,
+		0.48f, -0.76f, 0.0f,	0.0f,0.0f,0.0f,
+		0.255f,-0.65f, 0.0f,    0.0f,0.0f,0.0f,		//221-224
+		// Segmento 21
+		-0.32f, -0.079f, 0.0f,  0.0f,0.0f,0.0f,
+		-0.4f,  -0.275f, 0.0f,  0.0f,0.0f,0.0f,
+		-0.3f,  -0.35f,  0.0f,  0.0f,0.0f,0.0f,
+		-0.31f, -0.44f,  0.0f,  0.0f,0.0f,0.0f,
+		-0.465f,-0.36f,  0.0f,  0.0f,0.0f,0.0f,
+		-0.435f,-0.12f,  0.0f,  0.0f,0.0f,0.0f,		//225-230
+		// Segmento 22
+		-0.3f, -0.35f, 0.0f,	0.0f,0.0f,0.0f,
+		-0.23f,-0.4f,  0.0f,	0.0f,0.0f,0.0f,
+		-0.27f,-0.46f, 0.0f,	0.0f,0.0f,0.0f,
+		-0.31f,-0.44f, 0.0f,    0.0f,0.0f,0.0f,		//231-234
+		// OJO / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
+		// Segmento 23
+		-0.143f, 0.458f, 0.0f,	  1.0f,1.0f,1.0f,
+		-0.02f,  0.38f,  0.0f,    1.0f,1.0f,1.0f,
+		-0.08f,  0.222f, 0.0f,    1.0f,1.0f,1.0f,
+		-0.22f,  0.218f, 0.0f,    1.0f,1.0f,1.0f,
+		-0.29f,  0.28f,  0.0f,    1.0f,1.0f,1.0f,
+		-0.27f,  0.45f,  0.0f,    1.0f,1.0f,1.0f,	//235-240
+		// Segmento 24
+		-0.18f,  0.36f, 0.0f,	  0.0f,0.0f,0.0f,
+		-0.15f,  0.35f, 0.0f,     0.0f,0.0f,0.0f,
+		-0.14f,  0.32f, 0.0f,     0.0f,0.0f,0.0f,
+		-0.17f,  0.3f,  0.0f,     0.0f,0.0f,0.0f,
+		-0.20f,  0.33f, 0.0f,     0.0f,0.0f,0.0f,	//241-245
+
+
 	};
 	unsigned int indices[] = {  // note that we start from 0!
 		//2,3,0,
-		3,2,1,// second Triangle
-		0,1,3,
-		
+		//3,2,1,// second Triangle
+		//0,1,3,
+
+		//Seccion 1
+		0,1,2,
+		0,2,3,
+		0,3,7,
+		3,4,7,
+		4,5,7,
+		5,6,7,		//18
+		//Seccion 2
+		8,9,10,
+		8,10,11,	//24
+		//Sección 3
+		12,13,14,
+		14,15,12,	//30
+		//Sección 4
+		16,17,23,
+		23,22,17,
+		17,22,18,
+		18,22,21,
+		20,21,18,
+		18,19,20,	//48
+		//Sección 5
+		24,25,26,
+		27,24,26,	//54
+		//Sección 6
+		28,29,30,
+		31,28,30,	//60
+		//Sección 7
+		32,33,34,	//63
+		//Sección 8
+		35,36,37,
+		38,35,37,	//69
+		//Sección 9
+		39,40,41,
+		42,43,44,	//75
+		//Sección 10
+		45,46,47,
+		47,48,45,
+		48,49,45,
+		50,49,45,
+		51,52,53,	//90
+		//Sección 11
+		54,55,56,
+		54,56,57,
+		58,59,60,	//99
+		//Sección 12
+		61,62,63,
+		64,65,66,
+		64,66,67,
+		64,67,61,
+		68,69,70,
+		71,70,68,	//117
+		//Sección 13
+		72,73,74,
+		75,74,72,	//123
+		//Sección 14
+		76,77,78,
+		78,79,80,
+		80,78,76,	//132
+		//Sección 15
+		81,82,83,
+		84,83,81,
+		85,86,87,
+		88,87,85,	//144
+		//Sección 16
+		89,90,92,
+		90,91,92,
+		93,92,89,	//153
+		//Sección 17
+		94,95,96,
+		97,96,94,	//159
+		//Sección18
+		98,99,100,
+		101,100,98,	//165
+		//Sección 19
+		102,103,106,
+		103,104,106,
+		106,105,104,//174
+		//Sección 20
+		107,108,109,
+		110,109,107,//180
+		//Sección 21
+		111,112,116,
+		112,113,114,
+		114,115,112,
+		116,112,115,//192
+		//Seccióin 22
+		117,118,119,
+		120,119,117,//198
+		//Seccion 23
+		121,122,123,
+		121,123,124,
+		121,124,125,
+		121,125,126,//210
+		//Seccion 24
+		127,128,129,
+		127,129,130,
+		127,130,131,//219
+
 	};
 
 
-	
+
 	//cargando info de los verticces a los buffer para poderlos enlazar y luego envíar al shader
 
-	GLuint VBO, VAO,EBO;
+	GLuint VBO, VAO, EBO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 	glGenBuffers(1, &EBO);
@@ -116,16 +532,16 @@ int main() {
 	// 4. Despues colocamos las caracteristicas de los vertices
 
 	//Posicion
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid *)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
 
 	//Color
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid *)(3*sizeof(GLfloat)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-		
+
 	glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs)
 
 
@@ -138,29 +554,214 @@ int main() {
 
 		// Render
 		// Clear the colorbuffer
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);	//CAMBIANDO COLOR DEL BUFFER
 		glClear(GL_COLOR_BUFFER_BIT);
 
 
 		// Draw our first triangle
-        ourShader.Use();
-        glBindVertexArray(VAO);
+		ourShader.Use();
+		glBindVertexArray(VAO);
 
 
-        glPointSize(8);
-        glDrawArrays(GL_POINTS,0,4);		//dibuja cada punto
-        
-        //glDrawArrays(GL_LINES,0,4);		//dibuja unión de 2 vertices
-        glDrawArrays(GL_LINE_LOOP,0,4);		//dibuja todo el cuadrado
+		glPointSize(5);
+		glLineWidth(2);
+		//glDrawArrays(GL_POINTS,0,131);		//dibuja cada punto
+
+		//glDrawArrays(GL_LINES,0,50);			//dibuja unión de 2 vertices
+
+		// ----- ----- ----- ----- ----- - -- - ----- ----- ----- ----- -----
+		// ----- ----- ----- ----- ----- LINEAS ----- ----- ----- ----- -----
+		// CABEZA - - - - - - - - - -
+		//Primer segmento 
+		glDrawArrays(GL_LINE_LOOP, 0, 8);		//dibuja todo el cuadrado
+		//Segundo segmento
+		glDrawArrays(GL_LINE_LOOP, 8, 4);
+		//Terfcer segmento
+		glDrawArrays(GL_LINE_LOOP, 12, 4);
+		//Cuarto segmento
+		glDrawArrays(GL_LINE_LOOP, 16, 8);
+		//Quinto segmento
+		glDrawArrays(GL_LINE_LOOP, 24, 4);
+		//Sexto segmento
+		glDrawArrays(GL_LINE_LOOP, 28, 4);
+		//Septimo segmento
+		glDrawArrays(GL_LINE_LOOP, 32, 3);
+		//Octavo segmento
+		glDrawArrays(GL_LINE_LOOP, 35, 4);
+
+		// CUERPO - - - - - - - - - -
+		//Segmento 9
+		glDrawArrays(GL_LINE_LOOP, 39, 3);
+		glDrawArrays(GL_LINE_LOOP, 42, 3);
+		//Segmento 10
+		glDrawArrays(GL_LINE_LOOP, 45, 6);
+		glDrawArrays(GL_LINE_LOOP, 51, 3);
+		//Segmento 11
+		glDrawArrays(GL_LINE_LOOP, 54, 4);
+		glDrawArrays(GL_LINE_LOOP, 58, 3);
+		//Segmento 12
+		glDrawArrays(GL_LINE_LOOP, 61, 7);
+		glDrawArrays(GL_LINE_LOOP, 68, 4);
+		//Segmento 13
+		glDrawArrays(GL_LINE_LOOP, 72, 4);
+		//Segmento 14
+		glDrawArrays(GL_LINE_LOOP, 76, 5);
+
+		// COLA PATAS - - - - - - - - - -
+		//Segmento 15
+		glDrawArrays(GL_LINE_LOOP, 81, 4);
+		glDrawArrays(GL_LINE_LOOP, 85, 4);
+		//Segmento 16
+		glDrawArrays(GL_LINE_LOOP, 89, 5);
+		//Segmento 17
+		glDrawArrays(GL_LINE_LOOP, 94, 4);
+		//Segmento 18
+		glDrawArrays(GL_LINE_LOOP, 98, 4);
+		//Segmento 19
+		glDrawArrays(GL_LINE_LOOP, 102, 5);
+		//Segmento 20
+		glDrawArrays(GL_LINE_LOOP, 107, 4);
+		//Segmento 21
+		glDrawArrays(GL_LINE_LOOP, 111, 6);
+		//Segmento 22
+		glDrawArrays(GL_LINE_LOOP, 117, 4);
+
+		// OJO - - - - - - - - - -
+		//Segmento 23
+		glDrawArrays(GL_LINE_LOOP, 121, 6);
+		//Segmento 24
+		glDrawArrays(GL_LINE_LOOP, 127, 5);
+
 		//glDrawArrays(GL_LINE_LOOP, 0, 3);		//dibuja todo el cuadrado triangulo      
 
-        glDrawArrays(GL_TRIANGLES,0,3);		//dibuja triangulos
-        //glDrawElements(GL_TRIANGLES, 3,GL_UNSIGNED_INT,0);		//dibujando triangulos tomando vertice de inicio independientemente
 
-        
-        
-        glBindVertexArray(0);
-    
+		// ----- ----- ----- ----- ----- - - - ----- ----- ----- ----- -----
+		// ----- ----- ----- ----- ----- COLOR ----- ----- ----- ----- -----
+		// CABEZA - - - - - - - - - -
+		//glDrawArrays(GL_TRIANGLES,0,8);							//dibuja triangulos
+		//glDrawElements(GL_TRIANGLES, 8, GL_UNSIGNED_INT, 0);		//dibujando triangulos tomando vertice de inicio independientemente
+
+		//glDrawArrays(GL_TRIANGLES, 0, 3);
+		//glDrawArrays(GL_TRIANGLES, 3, 3);
+		//glDrawArrays(GL_TRIANGLES, 5, 3);
+		//glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, 0);									//1
+
+		//(void*) convierte el número de bytes al tipo depuntero que ve glDrawElements 
+		//El 4to parametro, es donde inicia la sección:  posición * tamaño de unsigned int
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(18 * sizeof(unsigned int)));	//2
+
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(24 * sizeof(unsigned int)));	//3
+
+		glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, (void*)(30 * sizeof(unsigned int)));	//4
+
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(48 * sizeof(unsigned int)));	//5
+
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(54 * sizeof(unsigned int)));	//6
+
+		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (void*)(60 * sizeof(unsigned int)));	//7
+
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(63 * sizeof(unsigned int)));	//8
+
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(69 * sizeof(unsigned int)));	//9
+
+		glDrawElements(GL_TRIANGLES, 15, GL_UNSIGNED_INT, (void*)(75 * sizeof(unsigned int)));	//10
+
+		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, (void*)(90 * sizeof(unsigned int)));	//11
+
+		glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, (void*)(99 * sizeof(unsigned int)));	//12
+
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(117 * sizeof(unsigned int)));	//13
+
+		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, (void*)(123 * sizeof(unsigned int)));	//14
+
+		glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, (void*)(132 * sizeof(unsigned int)));	//15 
+
+		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, (void*)(144 * sizeof(unsigned int)));	//16
+
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(153 * sizeof(unsigned int)));	//17
+
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(159 * sizeof(unsigned int)));	//18
+
+		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, (void*)(165 * sizeof(unsigned int)));	//19
+
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(174 * sizeof(unsigned int)));	//20
+
+		glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, (void*)(180 * sizeof(unsigned int)));	//21 
+
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(192 * sizeof(unsigned int)));	//22
+
+		glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, (void*)(198 * sizeof(unsigned int)));	//23
+
+		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, (void*)(210 * sizeof(unsigned int)));	//24
+
+		//glDrawArrays(GL_TRIANGLES, 0, 4);
+		//glDrawArrays(GL_TRIANGLES, 0, 3);  // 0-1-2
+		//glDrawArrays(GL_TRIANGLES, 2, 3);  // 2-3-4 (reutiliza patrón)
+		//glDrawArrays(GL_TRIANGLES, 4, 3);  // 4-5-6
+		//glDrawArrays(GL_TRIANGLES, 5, 3);  // 5-6-7
+
+
+		// ----- ----- ----- ----- ----- - - - - - - - ----- ----- ----- ----- -----
+		// ----- ----- ----- ----- ----- LINEAS NEGRAS ----- ----- ----- ----- -----
+		// CABEZA - - - - - - - - - -
+		//segmento 1
+		glDrawArrays(GL_LINE_LOOP, 132, 8);
+		//segmento 2
+		glDrawArrays(GL_LINE_LOOP, 140, 4);
+		//segmento 3
+		glDrawArrays(GL_LINE_LOOP, 144, 4);
+		//segmento 4
+		glDrawArrays(GL_LINE_LOOP, 148, 8);
+		//segmento 5
+		glDrawArrays(GL_LINE_LOOP, 156, 4);
+		//segmento 6
+		glDrawArrays(GL_LINE_LOOP, 160, 4);
+		//segmento 7
+		glDrawArrays(GL_LINE_LOOP, 164, 3);
+		//segmento 8
+		glDrawArrays(GL_LINE_LOOP, 167, 4);
+		//segmento 9
+		glDrawArrays(GL_LINE_LOOP, 171, 3);
+		//segmento 10
+		glDrawArrays(GL_LINE_LOOP, 174, 5);
+		//segmento 11
+		glDrawArrays(GL_LINE_LOOP, 179, 3);
+		//segmento 12
+		glDrawArrays(GL_LINE_LOOP, 182, 5);
+		//segmento 13
+		glDrawArrays(GL_LINE_LOOP, 187, 4);
+		//segmento 14 
+		glDrawArrays(GL_LINE_LOOP, 191, 3);
+		glDrawArrays(GL_LINE_LOOP, 194, 4);
+		//segmento 15
+		glDrawArrays(GL_LINE_LOOP, 198, 5);
+		//segmento 16
+		glDrawArrays(GL_LINE_LOOP, 203, 5);
+		//segmento 17
+		glDrawArrays(GL_LINE_LOOP, 208, 4);
+		//segmento 18
+		glDrawArrays(GL_LINE_LOOP, 212, 4);
+		//segmento 19
+		glDrawArrays(GL_LINE_LOOP, 216, 5);
+		//segmento 20
+		glDrawArrays(GL_LINE_LOOP, 221, 4);
+		//segmento 21
+		glDrawArrays(GL_LINE_LOOP, 225, 6);
+		//segmento 22
+		glDrawArrays(GL_LINE_LOOP, 231, 4);
+
+
+
+		//glDrawArrays(GL_TRIANGLES,1,8);		
+		//glDrawArrays(GL_TRIANGLES,0,3);
+		//glDrawArrays(GL_TRIANGLES,0,3);
+		//glDrawElements(GL_TRIANGLES, 3,GL_UNSIGNED_INT,0);		//dibujando triangulos tomando vertice de inicio independientemente
+
+
+
+		glBindVertexArray(0);
+
 		// Swap the screen buffers
 		glfwSwapBuffers(window);
 	}
