@@ -1,8 +1,8 @@
-//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
-//Práctica #3 							              Ruiz Vargas Ricardo
-//Fecha de entrega: X de septiembre de 2026 				        316226068
+//Práctica #3 											  Ruiz Vargas Ricardo
+//Fecha de entrega: 05 de septiembre de 2026 				        316226068
 //
 //
 
@@ -37,7 +37,7 @@ int main() {
 
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Proyecciones y transformaciones basicas", nullptr, nullptr);
+	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Práctica 3 - Ricardo_Ruiz_Vargas", nullptr, nullptr);
 
 	int screenWidth, screenHeight;
 
@@ -226,42 +226,106 @@ int main() {
 		glm::mat4 model=glm::mat4(1);
 		glm::mat4 view=glm::mat4(1);
 	
-	    //view = glm::translate(view, glm::vec3(0.0f,0.0f,0.0f));
+		// ABAJO A LA IZQUIERDA
+		//view = glm::translate(view, glm::vec3(0.0f,0.0f,0.0f));
 		// view = glm::translate(view, glm::vec3(1.0f,2.0f,-600.0f));
-		view = glm::translate(view, glm::vec3(0.0f,-0.5f,-4.0f));
+		view = glm::translate(view, glm::vec3(-1.0f, -1.0f, -4.0f));
 		//model = glm::rotate( model, 0.5f, glm::vec3( 1.0f, 0.0f, 0.0f ) ); // use to compare orthographic and perspective projection
-		model = glm::rotate(model, 0.5f, glm::vec3(30.0f, -50.0f, 1.0f));
+		
+		//model = glm::rotate(model, 0.349f, glm::vec3(0.0f, -180.0f, 0.0f));					//Original
+		model = glm::rotate(model, glm::radians(-20.0f), glm::vec3(0.0f, 1.0f, 0.0f));			//Mejorada
+
 		//model = glm::scale(model, glm::vec3(500.0f, 500.0f, 500.0f));
-		model = glm::scale(model, glm::vec3(3.0f, 0.5f, 2.0f));
+		//model = glm::scale(model, glm::vec3(3.0f, 0.5f, 2.0f));
+
 		//view = glm::translate(view, glm::vec3(screenWidth / 2, screenHeight / 2, -700.0f)); 
 		//view = glm::translate( view, glm::vec3( screenWidth / 3, screenHeight / 1,-200.0f ) ); // use with orthographic projection
 																				  //^alcance de visualización
 		GLint modelLoc = glGetUniformLocation(ourShader.Program, "model");
 		GLint viewLoc = glGetUniformLocation(ourShader.Program, "view");
 		GLint projecLoc = glGetUniformLocation(ourShader.Program, "projection");
-		
+
 		glUniformMatrix4fv(projecLoc, 1, GL_FALSE, glm::value_ptr(projection));
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		
+
 
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
+		// ABAJO A LA DERECHA
 		model = glm::mat4(1);
-		model = glm::translate(model, glm::vec3(-1.0f, 1.5f, -1.0f));
-		model = glm::rotate(model, 0.5f, glm::vec3(-30.0f, +80.0f, -1.0f));
-		model = glm::scale(model, glm::vec3(1.5f, 0.75f, 0.80f));
+		model = glm::translate(model, glm::vec3(1.91f, 0.0f, -0.1f));
+		//model = glm::rotate(model, 0.5f, glm::vec3(-10.0f, +80.0f, 0.0f));					//Original usando radianes
+		model = glm::rotate(model, glm::radians(29.0f), glm::vec3(0.0f, 1.0f, 0.0f));			//Mejorada usando grados
+		model = glm::rotate(model, glm::radians(270.0f), glm::vec3(1.0f, 0.0f, 0.0f));			//Girando para ver otras caras
+		//model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
+		// EN MEDIO 
 		model = glm::mat4(1);
-		model = glm::translate(model, glm::vec3(1.0f, 1.8f, -1.0f));
-		model = glm::rotate(model, 0.5f, glm::vec3(759.0f, +150.0f, -1.0f));
-		model = glm::scale(model, glm::vec3(0.8f, 1.5f, 2.0f));
+		model = glm::translate(model, glm::vec3(0.9f, 0.84f, 0.0f));
+		//model = glm::rotate(model, 1.0f, glm::vec3(20.0f, 90.0f, -85.0f));					//Original
+		model = glm::rotate(model, glm::radians(60.0f), glm::vec3(0.2f, 1.0f, -1.0f));			//Mejorada 
+		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));			//Girando 
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::scale(model, glm::vec3(0.85f, 0.85f, 0.85f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+		// MEDIO DERECHA
+		model = glm::mat4(1);
+		model = glm::translate(model, glm::vec3(1.5f, 1.6f, 0.0f));
+		//model = glm::rotate(model, 1.0f, glm::vec3(0.0f, -90.0f, -30.0f));					//Original
+		model = glm::rotate(model, glm::radians(60.0f), glm::vec3(0.0f, -0.9f, -0.3f));			//Mejorada 
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));			//Girando 
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::scale(model, glm::vec3(0.68f, 0.68f, 0.68f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+		// MEDIO IZQUIERDA
+		model = glm::mat4(1);
+		model = glm::translate(model, glm::vec3(0.3f, 1.6f, -0.1f));
+		//model = glm::rotate(model, 1.4f, glm::vec3(1.5f, 0.0f, -0.2f));						//Original
+		//model = glm::rotate(model, glm::radians(70.0f), glm::vec3(1.5f, -0.4f, -0.4f));		//Mejorada 
+		model = glm::rotate(model, glm::radians(70.0f), glm::vec3(1.0f, 0.2f, 0.0f));
+		model = glm::rotate(model, glm::radians(30.0f), glm::vec3(0.0f, -1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));			//Girando 
+		model = glm::scale(model, glm::vec3(0.64f, 0.64f, 0.64f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+		// ARRIBA MEDIO
+		model = glm::mat4(1);
+		model = glm::translate(model, glm::vec3(0.93f, 2.25f, -0.05f));
+		model = glm::rotate(model, glm::radians(30.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(22.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(8.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));		//Girando
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(-1.0f, 0.0f, 0.0f)); 
+		model = glm::scale(model, glm::vec3(0.54f, 0.54f, 0.54f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+		// ARRIBA DERECHA
+		model = glm::mat4(1);
+		model = glm::translate(model, glm::vec3(1.4f, 2.72f, -0.1f));
+		model = glm::rotate(model, glm::radians(10.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(40.0f), glm::vec3(0.0f, -1.0f, 0.1f));
+		//model = glm::rotate(model, glm::radians(8.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));		//Girando
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.42f, 0.42f, 0.42f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
 
 		glBindVertexArray(0);
 
