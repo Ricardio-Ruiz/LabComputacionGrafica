@@ -1,7 +1,7 @@
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
-//Práctica #4 											  Ruiz Vargas Ricardo
+//Practica #4 											  Ruiz Vargas Ricardo
 //Fecha de entrega: 12 de septiembre de 2026 				        316226068
 //
 //

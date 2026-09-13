@@ -1,5 +1,5 @@
 #version 330 core
-//Comentado porque ahora se va a usar otra varriable
+//Comentado porque ahora se va a usar otra varriable 
 //in vec3 ourColor;
 
 out vec4 color;
