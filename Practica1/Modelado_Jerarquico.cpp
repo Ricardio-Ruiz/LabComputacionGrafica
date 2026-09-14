@@ -1,3 +1,12 @@
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//Practica #5 											  Ruiz Vargas Ricardo
+//Fecha de entrega: 14 de septiembre de 2026 				        316226068
+//
+//
+
+
 #include<iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -42,7 +51,7 @@ int main() {
 
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Modelado jerarquico", nullptr, nullptr);
+	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Practica 5 - Ricardo_Ruiz_Vargas", nullptr, nullptr);
 
 	int screenWidth, screenHeight;
 
