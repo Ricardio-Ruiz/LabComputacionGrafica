@@ -37,7 +37,9 @@ float	hombro = 0.0f,
 		codo = 0.0f,
 		muneca = 0.0f,
 		dedo1 = 0.0f,
-		dedo2 = 0.0f;
+		dedo2 = 0.0f,
+		pulgar1 = 0.0f,
+		pulgar2 = 0.0f;
 
 
 int main() {
@@ -200,7 +202,7 @@ int main() {
 
 
 		//View set up 
-		view = glm::translate(view, glm::vec3(movX,movY, movZ-1));
+		view = glm::translate(view, glm::vec3(movX-2,movY, movZ-2));
 		view = glm::rotate(view, glm::radians(rot), glm::vec3(0.0f, 1.0f, 0.0f));
 		view = glm::rotate(view, glm::radians(rot2), glm::vec3(1.0f, 0.0f, 0.0f));
 		view = glm::rotate(view, glm::radians(rot3), glm::vec3(0.0f, 0.0f, 1.0f));
@@ -277,6 +279,73 @@ int main() {
 		glDrawArrays(GL_TRIANGLES, 0, 36);//E
 		
 		
+
+
+		//Dedo 2 - a
+		model = glm::translate(modelTemp2, glm::vec3(0.5f, 0.15f, -0.0f));
+		model = glm::rotate(model, glm::radians(dedo1), glm::vec3(0.0f, 0.0, 1.0f));
+		modelTemp = model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 0.2f, 0.25f));
+		color = glm::vec3(0.6f, 0.2f, 0.0f);											//color
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);//D
+
+
+		//Dedo 2 - b
+		model = glm::translate(modelTemp, glm::vec3(0.5f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(dedo2), glm::vec3(0.0f, 0.0, 1.0f));
+		model = glm::translate(model, glm::vec3(0.35f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.7f, 0.2f, 0.25f));
+		color = glm::vec3(0.6f, 1.0f, 0.2f);											//color
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);//E
+
+
+		//Dedo 3 - a
+		model = glm::translate(modelTemp2, glm::vec3(0.5f, 0.15f, -0.4f));
+		model = glm::rotate(model, glm::radians(dedo1), glm::vec3(0.0f, 0.0, 1.0f));
+		modelTemp = model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 0.2f, 0.25f));
+		color = glm::vec3(0.6f, 0.2f, 0.0f);											//color
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);//D
+
+
+		//Dedo 3 - b
+		model = glm::translate(modelTemp, glm::vec3(0.5f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(dedo2), glm::vec3(0.0f, 0.0, 1.0f));
+		model = glm::translate(model, glm::vec3(0.35f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.7f, 0.2f, 0.25f));
+		color = glm::vec3(0.6f, 1.0f, 0.2f);											//color
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);//E
+
+
+		//Dedo P - a
+		model = glm::translate(modelTemp2, glm::vec3(0.2f, 0.0f, 0.5f));
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0, 0.0f));
+		model = glm::rotate(model, glm::radians(pulgar1), glm::vec3(0.0f, 0.0, 1.0f));
+		modelTemp = model = glm::translate(model, glm::vec3(0.4f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.8f, 0.2f, 0.25f));
+		color = glm::vec3(0.6f, 0.2f, 0.0f);											//color
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);//D
+
+
+		//Dedo P - b
+		model = glm::translate(modelTemp, glm::vec3(0.4f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(pulgar2), glm::vec3(0.0f, 0.0, 1.0f));
+		model = glm::translate(model, glm::vec3(0.2f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.4f, 0.2f, 0.25f));
+		color = glm::vec3(0.6f, 1.0f, 0.2f);											//color
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);//E
 		
 		
 		
@@ -389,6 +458,16 @@ int main() {
 		 dedo2 += 0.18f;										//hacia arriba
 	 if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
 		 dedo2 -= 0.18f;										//hacia abajo
+	 //Movimiento del pulgar1
+	 if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
+		 pulgar1 += 0.18f;										//hacia arriba
+	 if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+		 pulgar1 -= 0.18f;										//hacia abajo
+	 //Movimiento del pulgar2
+	 if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS)
+		 pulgar2 += 0.18f;										//hacia arriba
+	 if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+		 pulgar2 -= 0.18f;										//hacia abajo
  }
 
 
