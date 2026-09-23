@@ -1,0 +1,109 @@
+# By https://any3d.cc
+
+newmtl Material.001
+Kd 0.000000 0.000000 0.000000
+Ns 500.000000
+d 1.000000
+illum 2
+
+newmtl Material.016
+Kd 0.000000 0.000000 0.000000
+Ns 500.000000
+d 1.000000
+illum 2
+
+newmtl Material.015
+Kd 0.012217 0.012217 0.012217
+Ns 500.000000
+d 1.000000
+illum 2
+
+newmtl Material.003
+Kd 0.000000 0.000000 0.000000
+Ns 500.000000
+d 1.000000
+illum 2
+
+newmtl Material.002
+Kd 0.000000 0.000000 0.000000
+Ns 500.000000
+d 1.000000
+illum 2
+
+newmtl Material.007
+Kd 0.000000 0.000000 0.000000
+Ns 500.000000
+d 1.000000
+illum 2
+
+newmtl Material.008
+Kd 0.000000 0.000000 0.000000
+Ns 500.000000
+d 1.000000
+illum 2
+
+newmtl Material.011
+Kd 0.000000 0.000000 0.000000
+Ns 500.000000
+d 1.000000
+illum 2
+
+newmtl Material.009
+Kd 0.000000 0.000000 0.000000
+Ns 500.000000
+d 1.000000
+illum 2
+
+newmtl Material.018
+Kd 0.273803 0.000000 0.800000
+Ns 500.000000
+d 1.000000
+illum 2
+
+newmtl Material.012
+Kd 0.083710 0.000000 0.638272
+Ns 500.000000
+d 1.000000
+illum 2
+
+newmtl Material.017
+Kd 0.093738 0.000000 0.800000
+Ns 500.000000
+d 1.000000
+illum 2
+
+newmtl Material.004
+Kd 0.000000 0.000000 0.000000
+Ns 500.000000
+d 1.000000
+illum 2
+
+newmtl Material.005
+Kd 0.000000 0.000000 0.000000
+Ns 500.000000
+d 1.000000
+illum 2
+
+newmtl Material.014
+Kd 0.000000 0.000000 0.000000
+Ns 500.000000
+d 1.000000
+illum 2
+
+newmtl Material.010
+Kd 0.000000 0.000000 0.000000
+Ns 500.000000
+d 1.000000
+illum 2
+
+newmtl Material.013
+Kd 0.031064 0.031064 0.031064
+Ns 500.000000
+d 1.000000
+illum 2
+
+newmtl Material.021
+Kd 0.000000 0.000000 0.000000
+Ns 500.000000
+d 1.000000
+illum 2

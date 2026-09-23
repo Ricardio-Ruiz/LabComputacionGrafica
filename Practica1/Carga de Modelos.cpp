@@ -1,8 +1,8 @@
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
-//Previo #6 											  Ruiz Vargas Ricardo
-//Fecha de entrega: 20 de septiembre de 2026 				        316226068
+//Practica #6 											  Ruiz Vargas Ricardo
+//Fecha de entrega: 27 de septiembre de 2026 				        316226068
 //
 //
 
@@ -63,7 +63,7 @@ int main( )
     glfwWindowHint( GLFW_RESIZABLE, GL_FALSE );
     
     // Create a GLFWwindow object that we can use for GLFW's functions
-    GLFWwindow *window = glfwCreateWindow( WIDTH, HEIGHT, "Previo 6 - Ricardo_Ruiz_Vargas", nullptr, nullptr );
+    GLFWwindow *window = glfwCreateWindow( WIDTH, HEIGHT, "Practica 6 - Ricardo_Ruiz_Vargas", nullptr, nullptr );
     
     if ( nullptr == window )
     {
@@ -105,11 +105,14 @@ int main( )
     // Load models
     Model dog((char*)"Models/Perro/RedDog.obj");                    //Carga de ruta y nombre del objeto
     //Model kolog1((char*)"Models/Kolog1FBX/korok.fbx");
-    Model kologOBJ((char*)"Models/Kolog1OBJ/kolog1-obj.obj");         //fbx cambiado a obj
-    Model kologFBX((char*)"Models/Kolog1FBX/kolog1-fbx.fbx");         //fbx cambiando las rutas para que inccluya las texturas
-    Model metroid((char*)"Models/Metroid/metroid.obj");
-    Model zinnia((char*)"Models/Zinnia/zinnia.obj");
-    Model majora((char*)"Models/Majora/majora.obj");
+    //Model kologOBJ((char*)"Models/Kolog1OBJ/kolog1-obj.obj");         //fbx cambiado a obj
+    //Model kologFBX((char*)"Models/Kolog1FBX/kolog1-fbx.fbx");         //fbx cambiando las rutas para que inccluya las texturas
+    //Model metroid((char*)"Models/Metroid/metroid.obj");
+    //Model zinnia((char*)"Models/Zinnia/zinnia.obj");
+    //Model majora((char*)"Models/Majora/majora.obj");
+    Model laptop((char*)"Models/MacBook_blend/MacBookPro_blend.fbx");
+    //Model mouse((char*)"Models/scene_101724/scene.obj");
+    Model lentes((char*)"Models/glasses/LentesdeLeer.fbx");
 
 
     glm::mat4 projection = glm::perspective( camera.GetZoom( ), ( float )SCREEN_WIDTH/( float )SCREEN_HEIGHT, 0.1f, 100.0f );
@@ -140,9 +143,9 @@ int main( )
 
         // Draw the loaded model
         glm::mat4 model(1);
-        /*model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.0f));
+        model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.0f));
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        dog.Draw(shader);                   *///Aqui ya se carga el modelo 
+        dog.Draw(shader);                   //Aqui ya se carga el modelo 
 
         /*model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.5f)); 
         model = glm::scale(model, glm::vec3(1.5f,0.8f,2.0f));
@@ -158,36 +161,57 @@ int main( )
         //Cargando modelos propios
         //////unsigned int texturaCuerpo, texturaHoja;
 
-        model = glm::translate(model, glm::vec3(-1.0f, -0.44f, -0.2f)); 
-        model = glm::scale(model, glm::vec3(0.09f, 0.09f, 0.18f));
-        model = glm::rotate(model,glm::radians(-2.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        kologOBJ.Draw(shader);                  //Kolog OBJ
+        //model = glm::translate(model, glm::vec3(-1.0f, -0.44f, -0.2f)); 
+        //model = glm::scale(model, glm::vec3(0.09f, 0.09f, 0.18f));
+        //model = glm::rotate(model,glm::radians(-2.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        //glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        //kologOBJ.Draw(shader);                  //Kolog OBJ
 
-        model = glm::translate(model, glm::vec3(4.9f, 5.9f, 0.2f));
-        model = glm::scale(model, glm::vec3(0.18f, 0.25f, 0.27f));
-        model = glm::rotate(model, glm::radians(-7.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        kologFBX.Draw(shader);                  //Kolog FBX
+        //model = glm::translate(model, glm::vec3(4.9f, 5.9f, 0.2f));
+        //model = glm::scale(model, glm::vec3(0.18f, 0.25f, 0.27f));
+        //model = glm::rotate(model, glm::radians(-7.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        //glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        //kologFBX.Draw(shader);                  //Kolog FBX
 
-        model = glm::translate(model, glm::vec3(-18.0f, 4.0f, -1.8f));
-        model = glm::scale(model, glm::vec3(9.25f, 9.25f, 4.0f));
-        model = glm::rotate(model, glm::radians(-18.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        metroid.Draw(shader);                   //Metroid
+        //model = glm::translate(model, glm::vec3(-18.0f, 4.0f, -1.8f));
+        //model = glm::scale(model, glm::vec3(9.25f, 9.25f, 4.0f));
+        //model = glm::rotate(model, glm::radians(-18.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        //glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        //metroid.Draw(shader);                   //Metroid
 
-        //model = glm::rotate(model, glm::radians(40.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::translate(model, glm::vec3(-3.7f, -2.4f, -1.7f)); 
-        model = glm::scale(model, glm::vec3(3.0f, 2.0f, 2.5f));
-        model = glm::rotate(model, glm::radians(30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        zinnia.Draw(shader);                    //Zinnia
+        //////model = glm::rotate(model, glm::radians(40.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        //model = glm::translate(model, glm::vec3(-3.7f, -2.4f, -1.7f)); 
+        //model = glm::scale(model, glm::vec3(3.0f, 2.0f, 2.5f));
+        //model = glm::rotate(model, glm::radians(30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        //glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        //zinnia.Draw(shader);                    //Zinnia
 
-        model = glm::rotate(model, glm::radians(92.0f), glm::vec3(+1.0f, 0.0f, 0.0f));
+        //model = glm::rotate(model, glm::radians(92.0f), glm::vec3(+1.0f, 0.0f, 0.0f));
+        //model = glm::translate(model, glm::vec3(1.92f, 0.4f, -0.8f));
+        //model = glm::scale(model, glm::vec3(0.14f, 0.13f, 0.15f)); 
+        //glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        //majora.Draw(shader);                    //Majora
+
+
+
+        //PRACTICA
+        //model = glm::rotate(model, glm::radians(92.0f), glm::vec3(+1.0f, 0.0f, 0.0f));
         model = glm::translate(model, glm::vec3(1.92f, 0.4f, -0.8f));
-        model = glm::scale(model, glm::vec3(0.14f, 0.13f, 0.15f)); 
+        model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        majora.Draw(shader);                    //Majora
+        laptop.Draw(shader);                    //Laptop
+
+        //model = glm::rotate(model, glm::radians(92.0f), glm::vec3(+1.0f, 0.0f, 0.0f));
+        ///*model = glm::translate(model, glm::vec3(-1.92f, 0.4f, -0.8f));
+        //model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f)); 
+        //glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        //mouse.Draw(shader);   */                 //mouse
+
+        //model = glm::rotate(model, glm::radians(92.0f), glm::vec3(+1.0f, 0.0f, 0.0f));
+        model = glm::translate(model, glm::vec3(-13.92f, -3.4f, 5.8f));
+        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f)); 
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        lentes.Draw(shader);                    //lentes
 
 
         // Swap the buffers
