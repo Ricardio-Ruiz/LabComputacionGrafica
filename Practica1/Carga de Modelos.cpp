@@ -103,16 +103,18 @@ int main( )
     Shader shader( "Shader/modelLoading.vs", "Shader/modelLoading.frag" );
     
     // Load models
-    Model dog((char*)"Models/Perro/RedDog.obj");                    //Carga de ruta y nombre del objeto
+    Model dog((char*)"Models/Perro/perro.obj");                    //Carga de ruta y nombre del objeto
     //Model kolog1((char*)"Models/Kolog1FBX/korok.fbx");
     //Model kologOBJ((char*)"Models/Kolog1OBJ/kolog1-obj.obj");         //fbx cambiado a obj
     //Model kologFBX((char*)"Models/Kolog1FBX/kolog1-fbx.fbx");         //fbx cambiando las rutas para que inccluya las texturas
     //Model metroid((char*)"Models/Metroid/metroid.obj");
     //Model zinnia((char*)"Models/Zinnia/zinnia.obj");
     //Model majora((char*)"Models/Majora/majora.obj");
-    Model laptop((char*)"Models/MacBook_blend/MacBookPro_blend.fbx");
-    //Model mouse((char*)"Models/scene_101724/scene.obj");
-    Model lentes((char*)"Models/glasses/LentesdeLeer.fbx");
+
+    //Practica 6
+    Model lentes((char*)"Models/P6/LectureGlasses/lentes/lentes7-chick.fbx");
+    Model silla((char*)"Models/P6/Silla/silla3.dae");
+    Model mesa((char*)"Models/P6/Mesa/mesaZ.obj");
 
 
     glm::mat4 projection = glm::perspective( camera.GetZoom( ), ( float )SCREEN_WIDTH/( float )SCREEN_HEIGHT, 0.1f, 100.0f );
@@ -143,9 +145,12 @@ int main( )
 
         // Draw the loaded model
         glm::mat4 model(1);
-        model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.0f));
-        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        dog.Draw(shader);                   //Aqui ya se carga el modelo 
+        
+        // Perros del previo / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
+        //model = glm::rotate(model, glm::radians(40.0f), glm::vec3(1.0f, 0.0f, 0.0f)); 
+        //model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.0f));
+        //glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        //dog.Draw(shader);                   //Aqui ya se carga el modelo 
 
         /*model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.5f)); 
         model = glm::scale(model, glm::vec3(1.5f,0.8f,2.0f));
@@ -157,8 +162,7 @@ int main( )
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         dog.Draw(shader);*/                 //perro gigante
 
-
-        //Cargando modelos propios
+        //Cargando modelos propios / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
         //////unsigned int texturaCuerpo, texturaHoja;
 
         //model = glm::translate(model, glm::vec3(-1.0f, -0.44f, -0.2f)); 
@@ -194,24 +198,39 @@ int main( )
 
 
 
-        //PRACTICA
-        //model = glm::rotate(model, glm::radians(92.0f), glm::vec3(+1.0f, 0.0f, 0.0f));
-        model = glm::translate(model, glm::vec3(1.92f, 0.4f, -0.8f));
-        model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
+        //PRACTICA / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
+        //model = glm::rotate(model, glm::radians(30.0f), glm::vec3(-1.0f, 0.0f, 0.0f)); 
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        laptop.Draw(shader);                    //Laptop
-
-        //model = glm::rotate(model, glm::radians(92.0f), glm::vec3(+1.0f, 0.0f, 0.0f));
-        ///*model = glm::translate(model, glm::vec3(-1.92f, 0.4f, -0.8f));
-        //model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f)); 
-        //glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        //mouse.Draw(shader);   */                 //mouse
-
-        //model = glm::rotate(model, glm::radians(92.0f), glm::vec3(+1.0f, 0.0f, 0.0f));
-        model = glm::translate(model, glm::vec3(-13.92f, -3.4f, 5.8f));
-        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f)); 
+        dog.Draw(shader);                       //perro en OBJ      <---     
+        
+        model = glm::translate(model, glm::vec3(0.0f, 0.62f, -0.22f));                 
+        model = glm::rotate(model, glm::radians(-82.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        //model = glm::scale(model, glm::vec3(1.3f, 1.0f, 1.0f)); 
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        lentes.Draw(shader);                    //lentes
+        //glEnable(GL_BLEND);                                     //Agregar la
+        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);      //transparencia
+        lentes.Draw(shader);                    //lentes en FBX     <---
+        //glDisable(GL_BLEND);
+
+        model = glm::translate(model, glm::vec3(0.0f, -0.3f, -1.12f));
+        model = glm::rotate(model, glm::radians(-8.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        //model = glm::scale(model, glm::vec3(1.3f, 1.0f, 1.0f)); 
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        silla.Draw(shader);                    //silla en DAE       <---
+
+        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(1.3f, 1.15f, 1.2f)); 
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        mesa.Draw(shader);                    //mesa en OBJ        <---
+
+        
+
+
+
+
+
 
 
         // Swap the buffers
