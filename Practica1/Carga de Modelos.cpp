@@ -320,7 +320,7 @@ int main( )
         //glEnable(GL_BLEND);                                     //Agregar la
         //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);      //transparencia
         cuarto.Draw(shader);                    //cuarto en OBJ     <---
-        //glDisable(GL_BLEND); 
+        //glDisable(GL_BLEND);
 
         
 
