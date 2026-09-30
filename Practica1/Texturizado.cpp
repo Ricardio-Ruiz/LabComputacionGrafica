@@ -1,8 +1,8 @@
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
-//Previo #7 											  Ruiz Vargas Ricardo
-//Fecha de entrega: 28 de septiembre de 2026 				        316226068
+//Practica #7 											  Ruiz Vargas Ricardo
+//Fecha de entrega: XX de septiembre de 2026 				        316226068
 //
 //
 
@@ -66,7 +66,7 @@ int main()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Previo 7 - Ricardo_Ruiz_Vargas", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Practica 7 - Ricardo_Ruiz_Vargas", nullptr, nullptr);
 
 	if (nullptr == window)
 	{
@@ -110,18 +110,25 @@ int main()
 	GLfloat vertices[] =													//Definición de los vertices del plano a manejar
 	{
 		// Positions            // Colors              // Texture Coords
-		-0.5f, -0.5f, 0.0f,    1.0f, 1.0f,1.0f,		0.0f,0.0f,		//0.0f,0.0f,
-		0.5f, -0.5f, 0.0f,	   1.0f, 1.0f,1.0f,		3.0f,0.0f,		//1.0f,0.0f,
-		0.5f,  0.5f, 0.0f,     1.0f, 1.0f,1.0f,	    3.0f,1.0f,		//1.0f,1.0f,
-		-0.5f,  0.5f, 0.0f,    1.0f, 1.0f,1.0f,		0.0f,1.0f,		//0.0f,1.0f,
-
+		-0.5f, -0.5f, 0.0f,    1.0f, 1.0f,1.0f,		0.31f,0.31f,		//0.0f,0.0f,
+		0.5f, -0.5f, 0.0f,	   1.0f, 1.0f,1.0f,		0.55f,0.31f,		//1.0f,0.0f,
+		0.5f,  0.5f, 0.0f,     1.0f, 1.0f,1.0f,	    0.55f,0.54f,		//1.0f,1.0f,
+		-0.5f,  0.5f, 0.0f,    1.0f, 1.0f,1.0f,		0.31f,0.54f,		//0.0f,1.0f,
 		
+		// Cara derecha
+		0.5f, -0.5f, -0.5f,    1.0f, 1.0f,1.0f,		0.31f,0.31f,		//
+		0.5f, -0.5f, -0.5f,	   1.0f, 1.0f,1.0f,		0.55f,0.31f,		//
+		0.5f,  0.5f, 0.5f,     1.0f, 1.0f,1.0f,	    0.55f,0.54f,		//
+		-0.5f,  0.5f, 0.5f,    1.0f, 1.0f,1.0f,		0.31f,0.54f,		//
 	};
 
 	GLuint indices[] =
 	{  // Note that we start from 0!
 		0,1,3,
-		1,2,3
+		1,2,3,
+
+		4,5,6,
+		6,7,4
 	
 	};
 
@@ -236,6 +243,35 @@ int main()
 	stbi_image_free(image);
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+	//---------------------------------------------------------------------------------------------------------------------------
+	//Carga de la textura DADO --------------------------------------------------------------------------------------------------
+	GLuint texture5;							//identificador de la textura
+	glGenTextures(1, &texture5);				//enlace del identificador la textura con el tipo de elemento (textura)
+	glBindTexture(GL_TEXTURE_2D, texture5);
+	//int textureWidth, textureHeight, nrChannels;
+	//stbi_set_flip_vertically_on_load(true);		//volteo de la textura (para corregir el volteo de la libreria)
+	//unsigned char* image;
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+	// Diffuse map - - - - - - - - - -
+	image = stbi_load("images/dado-colorido.jpg", &textureWidth, &textureHeight, &nrChannels, 0);		//Carga de la ruta de la texturA
+	glBindTexture(GL_TEXTURE_2D, texture5);		// se vincula ahora si la imagen con el identificador
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureWidth, textureHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image);	//RGBA para transparecnia
+	glGenerateMipmap(GL_TEXTURE_2D);			//optimizar recursos segun la distancia
+	if (image)
+	{									//RGBA para transparecnia					  |/
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureWidth, textureHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(image);
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 	
 
 	// Game loop
@@ -266,6 +302,7 @@ int main()
 		GLint viewLoc = glGetUniformLocation(lampShader.Program, "view");
 		GLint projLoc = glGetUniformLocation(lampShader.Program, "projection");
 
+		//Textura 1 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// Bind diffuse map
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture1);
@@ -281,51 +318,126 @@ int main()
 
 		// Previo - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		//Textura 2 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-		model = glm::mat4(1.0f);					// <--- REINICIO DE MATRIZ
-		model = glm::translate(model, glm::vec3(-1.1f, 0.0f, 0.2f));
-		model = glm::rotate(model, glm::radians(20.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		//																		//Redundancia de al usar el canal. "es como
-		//glActiveTexture(GL_TEXTURE0);						-->					//decirle a una puerta abierta que se abra."
-		glBindTexture(GL_TEXTURE_2D, texture2);
-		//
-		//glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));		//se están volviendo a enviar las matrices
-		//glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));	//	--> son pa ra la cámara
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));		
-		//
-		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		glBindVertexArray(0);
+		//model = glm::mat4(1.0f);					// <--- REINICIO DE MATRIZ
+		//model = glm::translate(model, glm::vec3(-1.1f, 0.0f, 0.2f));
+		//model = glm::rotate(model, glm::radians(20.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		////																		//Redundancia de al usar el canal. "es como
+		////glActiveTexture(GL_TEXTURE0);						-->					//decirle a una puerta abierta que se abra."
+		//glBindTexture(GL_TEXTURE_2D, texture2);
+		////
+		////glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));		//se están volviendo a enviar las matrices
+		////glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));	//	--> son pa ra la cámara
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));		
+		////
+		//glBindVertexArray(VAO);
+		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		//glBindVertexArray(0);
 
-		//Textura 3 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-		model = glm::mat4(1.0f);					// <--- REINICIO DE MATRIZ
-		model = glm::translate(model, glm::vec3(1.1f, 0.0f, 0.2f));
-		model = glm::rotate(model, glm::radians(-20.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		//
-		glBindTexture(GL_TEXTURE_2D, texture3);
-		//se actualizaa ÚNICAMENTE el uniform 'modelLoc' en el shader para esta nueva posición
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		//
-		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		glBindVertexArray(0);
+		////Textura 3 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		//model = glm::mat4(1.0f);					// <--- REINICIO DE MATRIZ
+		//model = glm::translate(model, glm::vec3(1.1f, 0.0f, 0.2f));
+		//model = glm::rotate(model, glm::radians(-20.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		////
+		//glBindTexture(GL_TEXTURE_2D, texture3);
+		////se actualizaa ÚNICAMENTE el uniform 'modelLoc' en el shader para esta nueva posición
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		////
+		//glBindVertexArray(VAO);
+		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		//glBindVertexArray(0);
 
-		//Textura 4 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-		model = glm::mat4(1.0f);					// <--- REINICIO DE MATRIZ
-		model = glm::translate(model, glm::vec3(0.0f, 1.1f, 0.2f));
-		model = glm::rotate(model, glm::radians(20.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		//
-		glBindTexture(GL_TEXTURE_2D, texture1);
-		//se actualizaa ÚNICAMENTE el uniform 'modelLoc' en el shader para esta nueva posición
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		//
-		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		glBindVertexArray(0);
+		////Textura 4 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		//model = glm::mat4(1.0f);					// <--- REINICIO DE MATRIZ
+		//model = glm::translate(model, glm::vec3(0.0f, 1.1f, 0.2f));
+		//model = glm::rotate(model, glm::radians(20.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		////
+		//glBindTexture(GL_TEXTURE_2D, texture1);
+		////se actualizaa ÚNICAMENTE el uniform 'modelLoc' en el shader para esta nueva posición
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		////
+		//glBindVertexArray(VAO);
+		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		//glBindVertexArray(0);
 
 
 		// Practica - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-		//A - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		//Lado 1 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - FRENTE
+		model = glm::mat4(1.0f);					// <--- REINICIO DE MATRIZ
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.5f));
+		//model = glm::rotate(model, glm::radians(20.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		//
+		glBindTexture(GL_TEXTURE_2D, texture5);
+		//se actualizaa ÚNICAMENTE el uniform 'modelLoc' en el shader para esta nueva posición
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
 
+		//Lado 2 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - DERECHA
+		model = glm::mat4(1.0f);					// <--- REINICIO DE MATRIZ
+		//model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.0f));
+		//model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		//
+		glBindTexture(GL_TEXTURE_2D, texture5);
+		//se actualizaa ÚNICAMENTE el uniform 'modelLoc' en el shader para esta nueva posición
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);/////////////////
+		glBindVertexArray(0);
+		
+		//Lado 3 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ATRAS
+		model = glm::mat4(1.0f);					// <--- REINICIO DE MATRIZ
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -0.5f));
+		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		//
+		glBindTexture(GL_TEXTURE_2D, texture5);
+		//se actualizaa ÚNICAMENTE el uniform 'modelLoc' en el shader para esta nueva posición
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
+
+		//Lado 4 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - DERECHA
+		model = glm::mat4(1.0f);					// <--- REINICIO DE MATRIZ
+		model = glm::translate(model, glm::vec3(-0.5f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		//
+		glBindTexture(GL_TEXTURE_2D, texture5);
+		//se actualizaa ÚNICAMENTE el uniform 'modelLoc' en el shader para esta nueva posición
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
+
+		//Lado 5 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ARRIBA
+		model = glm::mat4(1.0f);					// <--- REINICIO DE MATRIZ
+		model = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		//
+		glBindTexture(GL_TEXTURE_2D, texture5);
+		//se actualizaa ÚNICAMENTE el uniform 'modelLoc' en el shader para esta nueva posición
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
+
+		//Lado 6 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ABAJO
+		model = glm::mat4(1.0f);					// <--- REINICIO DE MATRIZ
+		model = glm::translate(model, glm::vec3(0.0f, -0.5f, 0.0f));
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		//
+		glBindTexture(GL_TEXTURE_2D, texture5);
+		//se actualizaa ÚNICAMENTE el uniform 'modelLoc' en el shader para esta nueva posición
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
 
 
 
