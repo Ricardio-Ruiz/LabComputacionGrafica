@@ -116,19 +116,56 @@ int main()
 		-0.5f,  0.5f, 0.0f,    1.0f, 1.0f,1.0f,		0.31f,0.54f,		//0.0f,1.0f,
 		
 		// Cara derecha
-		0.5f, -0.5f, -0.5f,    1.0f, 1.0f,1.0f,		0.31f,0.31f,		//
-		0.5f, -0.5f, -0.5f,	   1.0f, 1.0f,1.0f,		0.55f,0.31f,		//
-		0.5f,  0.5f, 0.5f,     1.0f, 1.0f,1.0f,	    0.55f,0.54f,		//
-		-0.5f,  0.5f, 0.5f,    1.0f, 1.0f,1.0f,		0.31f,0.54f,		//
+		0.5f, -0.5f,  0.5f,    1.0f, 1.0f,1.0f,		0.31f,0.55f,		// 4
+		0.5f, -0.5f, -0.5f,	   1.0f, 1.0f,1.0f,		0.55f,0.55f,		// 5
+		0.5f,  0.5f, -0.5f,    1.0f, 1.0f,1.0f,	    0.55f,0.80f,		// 6
+		0.5f,  0.5f,  0.5f,    1.0f, 1.0f,1.0f,		0.31f,0.80f,		// 7
+
+		// cara atras
+		 0.5f, -0.5f, -0.5f,   1.0f, 1.0f,1.0f,		0.56f,0.31f,		// 8
+		-0.5f, -0.5f, -0.5f,   1.0f, 1.0f,1.0f,		0.80f,0.31f,		// 9
+		-0.5f,  0.5f, -0.5f,   1.0f, 1.0f,1.0f,	    0.80f,0.55f,		// 10
+		 0.5f,  0.5f, -0.5f,   1.0f, 1.0f,1.0f,		0.56f,0.55f,		// 11
+
+		// cara izquierda
+		-0.5f, -0.5f, -0.5f,   1.0f, 1.0f,1.0f,		0.31f,0.05f,		// 12
+		-0.5f, -0.5f,  0.5f,   1.0f, 1.0f,1.0f,		0.55f,0.05f,		// 13
+		-0.5f,  0.5f,  0.5f,   1.0f, 1.0f,1.0f,	    0.55f,0.30f,		// 14
+		-0.5f,  0.5f, -0.5f,   1.0f, 1.0f,1.0f,		0.31f,0.30f,		// 15
+
+		//cara arriba
+		-0.5f, 0.5f,  0.5f,   1.0f, 1.0f,1.0f,		0.06f,0.31f,		// 16
+		 0.5f, 0.5f,  0.5f,   1.0f, 1.0f,1.0f,		0.30f,0.31f,		// 17
+		 0.5f, 0.5f, -0.5f,   1.0f, 1.0f,1.0f,	    0.30f,0.54f,		// 18
+		-0.5f, 0.5f, -0.5f,   1.0f, 1.0f,1.0f,		0.06f,0.54f,		// 19
+
+		//cara abajo
+		-0.5f, -0.5f, -0.5f,   1.0f, 1.0f,1.0f,		0.31f,0.31f,		// 20
+		 0.5f, -0.5f, -0.5f,   1.0f, 1.0f,1.0f,		0.55f,0.31f,		// 21
+		 0.5f, -0.5f,  0.5f,   1.0f, 1.0f,1.0f,	    0.55f,0.54f,		// 22
+		-0.5f, -0.5f,  0.5f,   1.0f, 1.0f,1.0f,		0.31f,0.54f,		// 23
+
 	};
 
 	GLuint indices[] =
 	{  // Note that we start from 0!
 		0,1,3,
-		1,2,3,
+		1,2,3,		//6
 
 		4,5,6,
-		6,7,4
+		6,7,4,		//12
+
+		8,9,10,
+		10,11,8,	//18
+
+		12,13,14,
+		14,15,12,	//24
+
+		16,17,18,
+		18,19,16,	//30
+
+		20,21,22,
+		22,23,20	//36
 	
 	};
 
@@ -384,59 +421,59 @@ int main()
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		//
 		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);/////////////////
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(6 * sizeof(unsigned int)));/////////////////
 		glBindVertexArray(0);
 		
 		//Lado 3 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ATRAS
 		model = glm::mat4(1.0f);					// <--- REINICIO DE MATRIZ
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -0.5f));
-		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		//model = glm::translate(model, glm::vec3(0.0f, 0.0f, -0.5f));
+		//model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		//
 		glBindTexture(GL_TEXTURE_2D, texture5);
 		//se actualizaa ÚNICAMENTE el uniform 'modelLoc' en el shader para esta nueva posición
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		//
 		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(12 * sizeof(unsigned int)));
 		glBindVertexArray(0);
 
-		//Lado 4 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - DERECHA
+		//Lado 4 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - IZQUIERDA
 		model = glm::mat4(1.0f);					// <--- REINICIO DE MATRIZ
-		model = glm::translate(model, glm::vec3(-0.5f, 0.0f, 0.0f));
-		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		//model = glm::translate(model, glm::vec3(-0.5f, 0.0f, 0.0f));
+		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		//
 		glBindTexture(GL_TEXTURE_2D, texture5);
 		//se actualizaa ÚNICAMENTE el uniform 'modelLoc' en el shader para esta nueva posición
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		//
 		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(18 * sizeof(unsigned int)));
 		glBindVertexArray(0);
 
 		//Lado 5 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ARRIBA
 		model = glm::mat4(1.0f);					// <--- REINICIO DE MATRIZ
-		model = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.0f));
-		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		//model = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.0f));
+		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		//
 		glBindTexture(GL_TEXTURE_2D, texture5);
 		//se actualizaa ÚNICAMENTE el uniform 'modelLoc' en el shader para esta nueva posición
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		//
 		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(24 * sizeof(unsigned int)));
 		glBindVertexArray(0);
 
 		//Lado 6 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ABAJO
 		model = glm::mat4(1.0f);					// <--- REINICIO DE MATRIZ
-		model = glm::translate(model, glm::vec3(0.0f, -0.5f, 0.0f));
-		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		//model = glm::translate(model, glm::vec3(0.0f, -0.5f, 0.0f));
+		//model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		//
 		glBindTexture(GL_TEXTURE_2D, texture5);
 		//se actualizaa ÚNICAMENTE el uniform 'modelLoc' en el shader para esta nueva posición
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		//
 		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(30 * sizeof(unsigned int)));
 		glBindVertexArray(0);
 
 
