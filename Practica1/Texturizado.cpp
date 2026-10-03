@@ -2,7 +2,7 @@
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
 //Practica #7 											  Ruiz Vargas Ricardo
-//Fecha de entrega: XX de septiembre de 2026 				        316226068
+//Fecha de entrega: 02 de octubre de 2026 							316226068
 //
 //
 
@@ -124,8 +124,8 @@ int main()
 		// cara atras
 		 0.5f, -0.5f, -0.5f,   1.0f, 1.0f,1.0f,		0.56f,0.31f,		// 8
 		-0.5f, -0.5f, -0.5f,   1.0f, 1.0f,1.0f,		0.80f,0.31f,		// 9
-		-0.5f,  0.5f, -0.5f,   1.0f, 1.0f,1.0f,	    0.80f,0.55f,		// 10
-		 0.5f,  0.5f, -0.5f,   1.0f, 1.0f,1.0f,		0.56f,0.55f,		// 11
+		-0.5f,  0.5f, -0.5f,   1.0f, 1.0f,1.0f,	    0.80f,0.54f,		// 10
+		 0.5f,  0.5f, -0.5f,   1.0f, 1.0f,1.0f,		0.56f,0.54f,		// 11
 
 		// cara izquierda
 		-0.5f, -0.5f, -0.5f,   1.0f, 1.0f,1.0f,		0.31f,0.05f,		// 12
@@ -140,10 +140,10 @@ int main()
 		-0.5f, 0.5f, -0.5f,   1.0f, 1.0f,1.0f,		0.06f,0.54f,		// 19
 
 		//cara abajo
-		-0.5f, -0.5f, -0.5f,   1.0f, 1.0f,1.0f,		0.31f,0.31f,		// 20
-		 0.5f, -0.5f, -0.5f,   1.0f, 1.0f,1.0f,		0.55f,0.31f,		// 21
-		 0.5f, -0.5f,  0.5f,   1.0f, 1.0f,1.0f,	    0.55f,0.54f,		// 22
-		-0.5f, -0.5f,  0.5f,   1.0f, 1.0f,1.0f,		0.31f,0.54f,		// 23
+		-0.5f, -0.5f, -0.5f,   1.0f, 1.0f,1.0f,		0.68f,0.67f,		// 20
+		 0.5f, -0.5f, -0.5f,   1.0f, 1.0f,1.0f,		0.92f,0.67f,		// 21
+		 0.5f, -0.5f,  0.5f,   1.0f, 1.0f,1.0f,	    0.92f,0.91f,		// 22
+		-0.5f, -0.5f,  0.5f,   1.0f, 1.0f,1.0f,		0.68f,0.91f,		// 23
 
 	};
 
@@ -342,15 +342,15 @@ int main()
 		//Textura 1 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// Bind diffuse map
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture1);
+		glBindTexture(GL_TEXTURE_2D, texture1);									//No hacen falta
 		// Set matrices
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));		//pero quiero dejarlo
 		// Draw the light object (using light's vertex attributes)
-		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		glBindVertexArray(0);
+		glBindVertexArray(VAO);													//para ver la guia de la 
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);					//cual partió la primera
+		glBindVertexArray(0);													//carda (frente) del dado
 
 
 		// Previo - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
