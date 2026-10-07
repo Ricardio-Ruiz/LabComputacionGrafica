@@ -1,8 +1,8 @@
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
-//Previo #8 											  Ruiz Vargas Ricardo
-//Fecha de entrega: 05 de octubre de 2026 							316226068
+//Practica #8 											  Ruiz Vargas Ricardo
+//Fecha de entrega: 11 de octubre de 2026 							316226068
 //
 //
 
@@ -73,7 +73,7 @@ int main()
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
     // Create a GLFWwindow object that we can use for GLFW's functions
-    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Previo 8 - Ricardo_Ruiz_Vargas", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Practica 8 - Ricardo_Ruiz_Vargas", nullptr, nullptr);
 
     if (nullptr == window)
     {
@@ -124,7 +124,59 @@ int main()
     Model zinnia_pose((char*)"Models/Zinnia/zinnia-pose.obj");
     //Model majora((char*)"Models/Majora/majora.obj");
 
+    //Practica 6
+    Model dog((char*)"Models/Perro/perro.obj");                    //Carga de ruta y nombre del objeto 
+    Model lentes((char*)"Models/P6/LectureGlasses/lentes/lentes7-chick.fbx");
+    Model silla((char*)"Models/P6/Silla/silla3.dae");
+    Model mesa((char*)"Models/P6/Mesa/mesaZ.obj"); 
+    Model cafe((char*)"Models/P6/Cafe/cafe.fbx"); 
+    Model raton((char*)"Models/P6/LaptopMouse/raton/scene.gltf"); 
+    Model compu((char*)"Models/P6/LaptopMouse/compu/laptop.glb"); 
+    Model sillon((char*)"Models/P6/sillon/sofa.fbx"); 
+    Model cuarto((char*)"Models/P6/habitacion/cuarto.obj"); 
 
+    Model luna((char*)"Models/P8/MajorasMask-Moon/moon.obj"); 
+    Model sol((char*)"Models/P6/sun/source/UnstableStar.fbx");
+
+
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//Para el GLB se supone que se debe de cargar el archivo de textura de forma manual
+// Carga manual de la texxtura de la laptop:
+    unsigned int compuTextura;
+    glGenTextures(1, &compuTextura);
+    glBindTexture(GL_TEXTURE_2D, compuTextura);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    int widthL, heightL, nrChannelsL;
+    //stbi_set_flip_vertically_on_load(true);      // <--- VOLTEA LA IMAGEN
+    unsigned char* dataL = stbi_load("Models/P6/LaptopMouse/compu/Image_0-inception-.jpg", &widthL, &heightL, &nrChannelsL, 0);
+    //    unsigned char* dataL = stbi_load("Models/P6/LaptopMouse/compu/Image_0GG.jpg", &widthL, &heightL, &nrChannelsL, 0);    //Mi pantalla
+    if (dataL) {
+        GLenum format;
+        if (nrChannelsL == 1) format = GL_RED;
+        else if (nrChannelsL == 3) format = GL_RGB;
+        else if (nrChannelsL == 4) format = GL_RGBA;
+
+        glTexImage2D(GL_TEXTURE_2D, 0, format, widthL, heightL, 0, format, GL_UNSIGNED_BYTE, dataL);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else {
+        std::cout << "Fallo al cargar la textura de la compu" << std::endl;
+    }
+    stbi_image_free(dataL);
+    // Inyección manual a todas las mallas del modelo
+    for (unsigned int i = 0; i < compu.meshes.size(); i++) {
+        compu.meshes[i].textures.clear();    // <--- ESTA LÍNEA ELIMINA LA TEXTURA NEGRA ROTA POR FIN!!        
+        Texture texL;
+        texL.id = compuTextura;
+        texL.type = "texture_diffuse";
+        texL.path = "Models/P6/LaptopMouse/compu/Image_0.jpg";
+        compu.meshes[i].textures.push_back(texL);
+    }
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     float vertices[] = {
         //Components x,y,z      Vector normal
@@ -272,21 +324,97 @@ int main()
         // MODELOS / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
         // / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
         // Draw the loaded model / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
+        //glm::mat4 model(1);
+        //model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
+        //glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        //glBindVertexArray(VAO);                 //^Al objeto se le manda el shader
+        ////glDrawArrays(GL_TRIANGLES, 0, 36);        //caja
+        //red_dog.Draw(lightingShader);               //perro
+        //glBindVertexArray(0);
+        //
+        //model = glm::mat4(1.0f);                // <--- REINICIO DE MATRIZ
+        ////////model = glm::rotate(model, glm::radians(40.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        //model = glm::translate(model, glm::vec3(-1.3f, -1.12f, 0.0f)); 
+        ////model = glm::scale(model, glm::vec3(3.0f, 2.0f, 2.5f));
+        ////model = glm::rotate(model, glm::radians(30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        //glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        //zinnia_pose.Draw(lightingShader);                   //Zinnia y Mascara de Majora 
+
+
+        //PRACTICA / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
         glm::mat4 model(1);
-        model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
+        model = glm::mat4(1.0f);                // <--- REINICIO DE MATRIZ 
+        //model = glm::rotate(model, glm::radians(30.0f), glm::vec3(-1.0f, 0.0f, 0.0f)); 
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+        //model = glm::rotate(model, glm::radians(8.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        glBindVertexArray(VAO);                 //^Al objeto se le manda el shader
-        //glDrawArrays(GL_TRIANGLES, 0, 36);        //caja
-        red_dog.Draw(lightingShader);               //perro
-        glBindVertexArray(0);
+        glBindVertexArray(VAO);
+        dog.Draw(lightingShader);                       //perro en OBJ      <---     
+
+        //model = glm::mat4(1.0f);                // <--- REINICIO DE MATRIZ
+        model = glm::translate(model, glm::vec3(0.0f, 0.62f, -0.22f));
+        model = glm::rotate(model, glm::radians(-82.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        //model = glm::scale(model, glm::vec3(1.3f, 1.0f, 1.0f)); 
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        //glEnable(GL_BLEND);                                     //Agregar la
+        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);      //transparencia
+        lentes.Draw(lightingShader);                    //lentes en FBX     <---
+        //glDisable(GL_BLEND);
+
+        model = glm::translate(model, glm::vec3(0.0f, -0.3f, -1.12f));
+        model = glm::rotate(model, glm::radians(-8.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        //model = glm::scale(model, glm::vec3(1.3f, 1.0f, 1.0f)); 
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        silla.Draw(lightingShader);                     //silla en DAE      <---
+
+        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(1.3f, 1.15f, 1.2f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        mesa.Draw(lightingShader);                      //mesa en OBJ       <---
+
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::translate(model, glm::vec3(-0.01f, -0.022f, -0.006f));
+        //model = glm::scale(model, glm::vec3(1.3f, 1.15f, 1.2f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        cafe.Draw(lightingShader);                      //cafe en FBX       <---
 
         model = glm::mat4(1.0f);                // <--- REINICIO DE MATRIZ
-        //////model = glm::rotate(model, glm::radians(40.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::translate(model, glm::vec3(-1.3f, -1.12f, 0.0f)); 
-        //model = glm::scale(model, glm::vec3(3.0f, 2.0f, 2.5f));
-        //model = glm::rotate(model, glm::radians(30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::translate(model, glm::vec3(-0.32f, 0.38f, 0.3f));
+        //model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        //model = glm::scale(model, glm::vec3(15.3f, 15.15f, 15.2f));
+        model = glm::scale(model, glm::vec3(0.009f, 0.009f, 0.009f));
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        zinnia_pose.Draw(lightingShader);                   //Zinnia y Mascara de Majora 
+        raton.Draw(lightingShader);                     //raton en GLtF     <---
+
+        model = glm::mat4(1.0f);                // <--- REINICIO DE MATRIZ
+        model = glm::translate(model, glm::vec3(-0.0f, 0.388f, 0.55f));
+        model = glm::scale(model, glm::vec3(0.05f, 0.07f, 0.07f));
+        model = glm::rotate(model, glm::radians(91.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        //Forzamiento del uso de la textura extraída
+        // Es el entrelazamiento manual de la textura al modelo
+        //glActiveTexture(GL_TEXTURE0);
+        //glBindTexture(GL_TEXTURE_2D, compuTextura);
+        compu.Draw(lightingShader);                     //compu en GLB      <---
+
+        model = glm::mat4(1.0f);                // <--- REINICIO DE MATRIZ
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, -0.5f));
+        model = glm::scale(model, glm::vec3(1.5f, 1.0f, 1.0f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        sillon.Draw(lightingShader);                    //sofa en FBX       <---
+
+        model = glm::mat4(1.0f);                // <--- REINICIO DE MATRIZ
+        model = glm::rotate(model, glm::radians(-180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::translate(model, glm::vec3(-4.0f, 0.25f, 0.3f));
+        model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        //glEnable(GL_BLEND);                                     //Agregar la
+        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);      //transparencia
+        cuarto.Draw(lightingShader);                    //cuarto en OBJ     <---
+        //glDisable(GL_BLEND);
 
 
 
@@ -309,18 +437,19 @@ int main()
         glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
         glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
         model = glm::mat4(1.0f);
-        //model = glm::translate(model, lightPos2 + movelightPos2);                 //posición de la luz 2
+            //model = glm::translate(model, lightPos2 + movelightPos2);                 //posición de la luz 2
         model = glm::translate(model, glm::vec3(-0.64f + movelightPos2x, 0.7f + movelightPos2y, 2.5f + movelightPos2z));        //op1
-        //model = glm::translate(model, (lightPos2 + movelightPos2x, lightPos2 + movelightPos2y, lightPos2 + movelightPos2z));  //op2
-        /*model = glm::translate(model, lightPos2 + movelightPos2x);                                                            //op3
-        model = glm::translate(model, lightPos2 + movelightPos2y);
-        model = glm::translate(model, lightPos2 + movelightPos2z);*/
-                //PArte en la que se aplicaría el movimiento libre de la luz 2
-        model = glm::scale(model, glm::vec3(1.0f, 0.2f, 0.3f));                     //para diferenciarla
+            //model = glm::translate(model, (lightPos2 + movelightPos2x, lightPos2 + movelightPos2y, lightPos2 + movelightPos2z));  //op2
+            /*model = glm::translate(model, lightPos2 + movelightPos2x);                                                            //op3
+            model = glm::translate(model, lightPos2 + movelightPos2y);
+            model = glm::translate(model, lightPos2 + movelightPos2z);*/
+                    //PArte en la que se aplicaría el movimiento libre de la luz 2
+        //model = glm::scale(model, glm::vec3(1.0f, 0.2f, 0.3f));                     //para diferenciarla
         glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-        glBindVertexArray(0);
+        //glDrawArrays(GL_TRIANGLES, 0, 36);
+        //glBindVertexArray(0);
+        dog.Draw(lampshader);                    //cuarto en OBJ     <---
 
 
 
