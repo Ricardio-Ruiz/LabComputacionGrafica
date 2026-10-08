@@ -39,14 +39,15 @@ void DoMovement();
 
 
 // Camera
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera camera(glm::vec3(0.0f, 0.55f, 2.0f));
 bool keys[1024];
 GLfloat lastX = 400, lastY = 300;
 bool firstMouse = true;
 
 
 // Light attributes
-glm::vec3 lightPos(0.5f, 0.5f, 2.5f);           //posición de la luz
+//glm::vec3 lightPos(0.5f, 0.5f, 2.5f);           //posición de la luz
+glm::vec3 lightPos(0.75f, 0.7f, 1.5f);           //PRACTICA - - - - -
 float movelightPos = 0.0f;                      //variable para la manipulación de la luz
 GLfloat deltaTime = 0.0f;                   //Elementos para poder intercambiarlos
 GLfloat lastFrame = 0.0f;                   // durante cada frame segun la rotación
@@ -54,10 +55,13 @@ float rot = 0.0f;
 bool activanim = false;
 
     //Previo 8 - - - - - - - - - - - - - - - - - 
-glm::vec3 lightPos2(-0.64f, 0.7f, 3.5f);          //Nueva fuente de luz
+//glm::vec3 lightPos2(-0.64f, 0.7f, 3.5f);          //Nueva fuente de luz
+glm::vec3 lightPos2(-0.75f, 0.7f, 1.5f);          //PRACTICA - - - - -
 float movelightPos2x = 0.0f;                      //variables para la manipulación de la luz 2
 float movelightPos2y = 0.0f;
 float movelightPos2z = 0.0f;
+
+float movelightRot = 0.0f;
 
 
 
@@ -135,8 +139,8 @@ int main()
     Model sillon((char*)"Models/P6/sillon/sofa.fbx"); 
     Model cuarto((char*)"Models/P6/habitacion/cuarto.obj"); 
 
-    Model luna((char*)"Models/P8/MajorasMask-Moon/moon.obj"); 
-    Model sol((char*)"Models/P6/sun/source/UnstableStar.fbx");
+    Model luna((char*)"Models/P8/MajorasMask-Moon/Luna-MarioGalaxy.obj"); 
+    Model sol((char*)"Models/P8/sun/source/UnstableStar.fbx");
 
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -176,7 +180,7 @@ int main()
         texL.path = "Models/P6/LaptopMouse/compu/Image_0.jpg";
         compu.meshes[i].textures.push_back(texL);
     }
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     float vertices[] = {
         //Components x,y,z      Vector normal
@@ -341,7 +345,7 @@ int main()
         //zinnia_pose.Draw(lightingShader);                   //Zinnia y Mascara de Majora 
 
 
-        //PRACTICA / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
+        //PRACTICA / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
         glm::mat4 model(1);
         model = glm::mat4(1.0f);                // <--- REINICIO DE MATRIZ 
         //model = glm::rotate(model, glm::radians(30.0f), glm::vec3(-1.0f, 0.0f, 0.0f)); 
@@ -421,35 +425,62 @@ int main()
         // FUENTES DE LUZ = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
         // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
         // Primer cubo de luz = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-        lampshader.Use();                       //se le manda otro shader
-        glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-        glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, lightPos + movelightPos);
-        model = glm::scale(model, glm::vec3(0.3f));
-        glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-        glBindVertexArray(0);
+        //lampshader.Use();                       //se le manda otro shader
+        //glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+        //glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+        //model = glm::mat4(1.0f);
+        //model = glm::translate(model, lightPos + movelightPos);
+        //model = glm::scale(model, glm::vec3(0.3f));
+        //glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        //glBindVertexArray(VAO);
+        //glDrawArrays(GL_TRIANGLES, 0, 36);
+        //glBindVertexArray(0);
 
         // Segundo cubo de luz = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+        //lampshader.Use();
+        //glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+        //glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+        //model = glm::mat4(1.0f);
+        //    //model = glm::translate(model, lightPos2 + movelightPos2);                 //posición de la luz 2
+        //model = glm::translate(model, glm::vec3(-0.64f + movelightPos2x, 0.7f + movelightPos2y, 2.5f + movelightPos2z));        //op1
+        //    //model = glm::translate(model, (lightPos2 + movelightPos2x, lightPos2 + movelightPos2y, lightPos2 + movelightPos2z));  //op2
+        //    /*model = glm::translate(model, lightPos2 + movelightPos2x);                                                            //op3
+        //    model = glm::translate(model, lightPos2 + movelightPos2y);
+        //    model = glm::translate(model, lightPos2 + movelightPos2z);*/
+        //            //PArte en la que se aplicaría el movimiento libre de la luz 2
+        //model = glm::scale(model, glm::vec3(1.0f, 0.2f, 0.3f));                     //para diferenciarla
+        //glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        //glBindVertexArray(VAO);
+        //glDrawArrays(GL_TRIANGLES, 0, 36);
+        //glBindVertexArray(0);
+        ////sol.Draw(lampshader);                    //cuarto en OBJ     <---
+
+
+        // LUNA = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
         lampshader.Use();
         glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
         glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
         model = glm::mat4(1.0f);
-            //model = glm::translate(model, lightPos2 + movelightPos2);                 //posición de la luz 2
-        model = glm::translate(model, glm::vec3(-0.64f + movelightPos2x, 0.7f + movelightPos2y, 2.5f + movelightPos2z));        //op1
-            //model = glm::translate(model, (lightPos2 + movelightPos2x, lightPos2 + movelightPos2y, lightPos2 + movelightPos2z));  //op2
-            /*model = glm::translate(model, lightPos2 + movelightPos2x);                                                            //op3
-            model = glm::translate(model, lightPos2 + movelightPos2y);
-            model = glm::translate(model, lightPos2 + movelightPos2z);*/
-                    //PArte en la que se aplicaría el movimiento libre de la luz 2
-        //model = glm::scale(model, glm::vec3(1.0f, 0.2f, 0.3f));                     //para diferenciarla
+        model = glm::translate(model, lightPos + movelightPos);                 //posición de la luz 2
+        //model = glm::translate(model, glm::vec3(-0.75f + movelightPos2x, 0.7f + movelightPos2y, 1.5f + movelightPos2z));        //op1
+        model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
+        model = glm::rotate(model, glm::radians(180.0f + movelightRot), glm::vec3(0.0f, 0.0f, 1.0f)); ////////////////////////////////////
         glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         glBindVertexArray(VAO);
-        //glDrawArrays(GL_TRIANGLES, 0, 36);
-        //glBindVertexArray(0);
-        dog.Draw(lampshader);                    //cuarto en OBJ     <---
+        luna.Draw(lampshader);                    //cuarto en OBJ     <---
+
+        // SOL  = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+        lampshader.Use();
+        glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+        glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+        model = glm::mat4(1.0f);
+        //model = glm::translate(model, lightPos2 + movelightPos2);                 //posición de la luz 2
+        model = glm::translate(model, glm::vec3(-0.75f + movelightPos2x, 0.7f + movelightPos2y, 1.5f + movelightPos2z));        //op1
+        model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
+        model = glm::rotate(model, glm::radians(0.0f + movelightRot), glm::vec3(0.0f, 0.0f, 1.0f)); ////////////////////////////////////
+        glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        glBindVertexArray(VAO);
+        sol.Draw(lampshader);                    //cuarto en OBJ     <---
 
 
 
@@ -554,6 +585,15 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
     if (keys[GLFW_KEY_Y])       //ABAJO     Y
     {
         movelightPos2y -= 0.1f;
+    }
+    //Movimiento para la rotacion Sol y Luna _________________________________
+    if (keys[GLFW_KEY_Q])       //ANTIHORARIO
+    {
+        movelightRot -= 5.0f;
+    }
+    if (keys[GLFW_KEY_E])       //HORARIO
+    {
+        movelightRot += 5.0f;
     }
 
 }
