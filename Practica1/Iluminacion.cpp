@@ -2,7 +2,7 @@
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
 //Practica #8 											  Ruiz Vargas Ricardo
-//Fecha de entrega: 11 de octubre de 2026 							316226068
+//Fecha de entrega: 10 de octubre de 2026 							316226068
 //
 //
 
@@ -39,7 +39,7 @@ void DoMovement();
 
 
 // Camera
-Camera camera(glm::vec3(0.0f, 0.55f, 2.0f));
+Camera camera(glm::vec3(0.0f, 0.5f, 2.2f));
 bool keys[1024];
 GLfloat lastX = 400, lastY = 300;
 bool firstMouse = true;
@@ -47,7 +47,7 @@ bool firstMouse = true;
 
 // Light attributes
 //glm::vec3 lightPos(0.5f, 0.5f, 2.5f);           //posición de la luz
-glm::vec3 lightPos(0.75f, 0.7f, 1.5f);           //PRACTICA - - - - -
+glm::vec3 lightPos(7.0f, 0.0f, 0.0f);           //PRACTICA - - - - -
 float movelightPos = 0.0f;                      //variable para la manipulación de la luz
 GLfloat deltaTime = 0.0f;                   //Elementos para poder intercambiarlos
 GLfloat lastFrame = 0.0f;                   // durante cada frame segun la rotación
@@ -56,7 +56,7 @@ bool activanim = false;
 
     //Previo 8 - - - - - - - - - - - - - - - - - 
 //glm::vec3 lightPos2(-0.64f, 0.7f, 3.5f);          //Nueva fuente de luz
-glm::vec3 lightPos2(-0.75f, 0.7f, 1.5f);          //PRACTICA - - - - -
+glm::vec3 lightPos2(-7.0f, 0.0f, 0.0f);          //PRACTICA - - - - -
 float movelightPos2x = 0.0f;                      //variables para la manipulación de la luz 2
 float movelightPos2y = 0.0f;
 float movelightPos2z = 0.0f;
@@ -140,7 +140,7 @@ int main()
     Model cuarto((char*)"Models/P6/habitacion/cuarto.obj"); 
 
     Model luna((char*)"Models/P8/MajorasMask-Moon/Luna-MarioGalaxy.obj"); 
-    Model sol((char*)"Models/P8/sun/source/UnstableStar.fbx");
+    Model sol((char*)"Models/P8/MarioGalaxy-Sun/Sol-MarioGalaxy2.obj"); 
 
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -286,6 +286,11 @@ int main()
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
+        //Matriz que ayuda a controlar la posicion de la luna y sol
+        glm::mat4 modelTemp = glm::mat4(1.0f); //Temp
+            //no la usé ja
+
         // LUCES . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
         //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
         lightingShader.Use();
@@ -420,7 +425,17 @@ int main()
         cuarto.Draw(lightingShader);                    //cuarto en OBJ     <---
         //glDisable(GL_BLEND);
 
-
+            //prueba de los modelos de luna y sol
+            //model = glm::mat4(1.0f);                // <--- REINICIO DE MATRIZ
+            //model = glm::translate(model, glm::vec3(-9.0f, 0.0f, -0.5f));
+            //model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+            //glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+            //luna.Draw(lightingShader);
+            //model = glm::mat4(1.0f);                // <--- REINICIO DE MATRIZ
+            //model = glm::translate(model, glm::vec3(-7.0f, 0.0f, -0.5f));
+            //model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+            //glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+            //sol.Draw(lightingShader);
 
         // FUENTES DE LUZ = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
         // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
@@ -453,34 +468,40 @@ int main()
         //glBindVertexArray(VAO);
         //glDrawArrays(GL_TRIANGLES, 0, 36);
         //glBindVertexArray(0);
-        ////sol.Draw(lampshader);                    //cuarto en OBJ     <---
+        ////sol.Draw(lampshader);                    //    <---
 
 
         // LUNA = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
         lampshader.Use();
+        model = glm::mat4(1.0f);                // <--- REINICIO DE MATRIZ
+        model = glm::rotate(model, glm::radians(movelightRot), glm::vec3(0.0f, 0.0f, 1.0f));        //Punto de giro
+        //model = glm::translate(model, glm::vec3(7.0f, 0.0f, 0.0f));                                 //Posision donde estará inicialmente
+        model = glm::translate(model, lightPos);                     //Posision donde estará inicialmente
         glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
         glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, lightPos + movelightPos);                 //posición de la luz 2
-        //model = glm::translate(model, glm::vec3(-0.75f + movelightPos2x, 0.7f + movelightPos2y, 1.5f + movelightPos2z));        //op1
+            //model = glm::mat4(1.0f);
+            //model = glm::translate(model, lightPos + movelightPos);                 //posición de la luz 2
+            ////model = glm::translate(model, glm::vec3(-0.75f + movelightPos2x, 0.7f + movelightPos2y, 1.5f + movelightPos2z));        //op1
         model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
-        model = glm::rotate(model, glm::radians(180.0f + movelightRot), glm::vec3(0.0f, 0.0f, 1.0f)); ////////////////////////////////////
         glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         glBindVertexArray(VAO);
-        luna.Draw(lampshader);                    //cuarto en OBJ     <---
+        luna.Draw(lampshader);                          //luna en OBJ     <---
 
         // SOL  = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
         lampshader.Use();
+        model = glm::mat4(1.0f);                // <--- REINICIO DE MATRIZ
+        model = glm::rotate(model, glm::radians(movelightRot), glm::vec3(0.0f, 0.0f, 1.0f));        //Punto de giro
+        //model = glm::translate(model, glm::vec3(-7.0f, 0.0f, 0.0f));                                //Posision donde estará inicialmente
+        model = glm::translate(model, lightPos2);                                //Posision donde estará inicialmente
         glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
         glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
-        model = glm::mat4(1.0f);
-        //model = glm::translate(model, lightPos2 + movelightPos2);                 //posición de la luz 2
-        model = glm::translate(model, glm::vec3(-0.75f + movelightPos2x, 0.7f + movelightPos2y, 1.5f + movelightPos2z));        //op1
+            //model = glm::mat4(1.0f);
+            ////model = glm::translate(model, lightPos2 + movelightPos);                 //posición de la luz 2
+            //model = glm::translate(model, glm::vec3(-0.75f + movelightPos2x, 0.7f + movelightPos2y, 1.5f + movelightPos2z));        //op1
         model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
-        model = glm::rotate(model, glm::radians(0.0f + movelightRot), glm::vec3(0.0f, 0.0f, 1.0f)); ////////////////////////////////////
         glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         glBindVertexArray(VAO);
-        sol.Draw(lampshader);                    //cuarto en OBJ     <---
+        sol.Draw(lampshader);                           //sol en OBJ     <---
 
 
 
