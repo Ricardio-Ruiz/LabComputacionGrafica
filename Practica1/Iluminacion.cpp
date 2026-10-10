@@ -47,7 +47,7 @@ bool firstMouse = true;
 
 // Light attributes
 //glm::vec3 lightPos(0.5f, 0.5f, 2.5f);           //posición de la luz
-glm::vec3 lightPos(7.9f, 0.0f, 0.0f);           //PRACTICA - - - - -
+glm::vec3 lightPos(7.9f, 0.0f, -0.3f);           //PRACTICA - - - - -
 float movelightPos = 0.0f;                      //variable para la manipulación de la luz
 GLfloat deltaTime = 0.0f;                   //Elementos para poder intercambiarlos
 GLfloat lastFrame = 0.0f;                   // durante cada frame segun la rotación
@@ -56,7 +56,7 @@ bool activanim = false;
 
     //Previo 8 - - - - - - - - - - - - - - - - - 
 //glm::vec3 lightPos2(-0.64f, 0.7f, 3.5f);          //Nueva fuente de luz
-glm::vec3 lightPos2(-7.9f, 0.0f, 0.0f);          //PRACTICA - - - - -
+glm::vec3 lightPos2(-7.9f, 0.0f, -0.3f);          //PRACTICA - - - - -
 float movelightPos2x = 0.0f;                      //variables para la manipulación de la luz 2
 float movelightPos2y = 0.0f;
 float movelightPos2z = 0.0f;
@@ -137,7 +137,7 @@ int main()
     Model raton((char*)"Models/P6/LaptopMouse/raton/scene.gltf"); 
     Model compu((char*)"Models/P6/LaptopMouse/compu/laptop.glb"); 
     Model sillon((char*)"Models/P6/sillon/sofa.fbx"); 
-    Model cuarto((char*)"Models/P6/habitacion/cuarto2.obj");
+    Model cuarto((char*)"Models/P6/habitacion/cuarto-2.obj");
     Model fondo((char*)"Models/P6/habitacion/fondo-cuarto.obj");
 
     Model luna((char*)"Models/P8/MajorasMask-Moon/Luna-MarioGalaxy.obj"); 
