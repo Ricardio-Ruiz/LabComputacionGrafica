@@ -47,7 +47,7 @@ bool firstMouse = true;
 
 // Light attributes
 //glm::vec3 lightPos(0.5f, 0.5f, 2.5f);           //posición de la luz
-glm::vec3 lightPos(7.0f, 0.0f, 0.0f);           //PRACTICA - - - - -
+glm::vec3 lightPos(7.9f, 0.0f, 0.0f);           //PRACTICA - - - - -
 float movelightPos = 0.0f;                      //variable para la manipulación de la luz
 GLfloat deltaTime = 0.0f;                   //Elementos para poder intercambiarlos
 GLfloat lastFrame = 0.0f;                   // durante cada frame segun la rotación
@@ -56,7 +56,7 @@ bool activanim = false;
 
     //Previo 8 - - - - - - - - - - - - - - - - - 
 //glm::vec3 lightPos2(-0.64f, 0.7f, 3.5f);          //Nueva fuente de luz
-glm::vec3 lightPos2(-7.0f, 0.0f, 0.0f);          //PRACTICA - - - - -
+glm::vec3 lightPos2(-7.9f, 0.0f, 0.0f);          //PRACTICA - - - - -
 float movelightPos2x = 0.0f;                      //variables para la manipulación de la luz 2
 float movelightPos2y = 0.0f;
 float movelightPos2z = 0.0f;
@@ -137,7 +137,8 @@ int main()
     Model raton((char*)"Models/P6/LaptopMouse/raton/scene.gltf"); 
     Model compu((char*)"Models/P6/LaptopMouse/compu/laptop.glb"); 
     Model sillon((char*)"Models/P6/sillon/sofa.fbx"); 
-    Model cuarto((char*)"Models/P6/habitacion/cuarto.obj"); 
+    Model cuarto((char*)"Models/P6/habitacion/cuarto2.obj");
+    Model fondo((char*)"Models/P6/habitacion/fondo-cuarto.obj");
 
     Model luna((char*)"Models/P8/MajorasMask-Moon/Luna-MarioGalaxy.obj"); 
     Model sol((char*)"Models/P8/MarioGalaxy-Sun/Sol-MarioGalaxy2.obj"); 
@@ -182,6 +183,10 @@ int main()
     }
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+
+    //// Build and compile our shader program
+    //Shader lampShader("Shader/lamp.vs", "Shader/lamp.frag");				//Los archivos que se agregaron
+
     float vertices[] = {
         //Components x,y,z      Vector normal
         -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,   //Ahora representan hacia donde va a estar apuntando el vector normal 
@@ -225,7 +230,21 @@ int main()
          0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
         -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
         -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+
+        //// Positions            // Colors              // Texture Coords
+        //- 0.5f, -0.5f, 0.0f,    1.0f, 1.0f,1.0f,	0.0f,0.0f,
+        //0.5f, -0.5f, 0.0f,	   1.0f, 1.0f,1.0f,		1.0f,0.0f,
+        //0.5f,  0.5f, 0.0f,     1.0f, 1.0f,1.0f,	    1.0f,1.0f,
+        //-0.5f,  0.5f, 0.0f,    1.0f, 1.0f,1.0f,		0.0f,1.0f,
     };
+    //GLuint indices[] =
+    //{  // Note that we start from 0!
+    //    36,37,38,
+    //    38,39,26,		//6
+    //};
+
+
+
 
     // First, set the container's VAO (and VBO)
     GLuint VBO, VAO;
@@ -241,8 +260,8 @@ int main()
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    //---------------------------------------------------------------------------------------------------------------------------
-    // Load textures
+    // Load textures ------------------------------------------------------------------------------------------------------------
+    // Textura perro ----------------------------------------------------------------------------------------
     GLuint texture;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -267,7 +286,62 @@ int main()
         std::cout << "Failed to load texture" << std::endl;
     }
     stbi_image_free(image);
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    //--------------------------------------------------------------------------------------------------------
+    //Carga de la textura2 -----------------------------------------------------------------------------------
+    GLuint texture2;							//identificador de la textura
+    glGenTextures(1, &texture2);				//enlace del identificador la textura con el tipo de elemento (textura)
+    glBindTexture(GL_TEXTURE_2D, texture2);
+    //int textureWidth, textureHeight, nrChannels;
+    //stbi_set_flip_vertically_on_load(true);		//volteo de la textura (para corregir el volteo de la libreria)
+    //unsigned char* image;
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+    // Diffuse map - - - - - - - - - -
+    image = stbi_load("Models/P6/habitacion/plant1.png", &textureWidth, &textureHeight, &nrChannels, 0);		//Carga de la ruta de la texturA
+    glBindTexture(GL_TEXTURE_2D, texture2);		// se vincula ahora si la imagen con el identificador
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureWidth, textureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);	//RGBA para transparecnia
+    glGenerateMipmap(GL_TEXTURE_2D);			//optimizar recursos segun la distancia
+    if (image)
+    {									//RGBA para transparecnia					  |/
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureWidth, textureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(image);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    // Textura cielo ----------------------------------------------------------------------------------------
+    GLuint texture3;
+    glGenTextures(1, &texture3);
+    glBindTexture(GL_TEXTURE_2D, texture3);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+
+    image = stbi_load("Models/P6/habitacion/Mario64DS-Background-Sky.png", &textureWidth, &textureHeight, &nrChannels, 0);
+    glBindTexture(GL_TEXTURE_2D, texture3);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureWidth, textureHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    if (image)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureWidth, textureHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(image);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
 
     // Game loop
@@ -294,11 +368,21 @@ int main()
         // LUCES . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
         //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
         lightingShader.Use();
+        
+        //Parte necesaria para poder muver las luces junto con las esfersas
+        glm::mat4 rotacion = glm::rotate(glm::mat4(1.0f), glm::radians(movelightRot), glm::vec3(0.0f, 0.0f, 1.0f)); //rotacion
+        //posiciones ya rotadas:                                         ^sumar al teclear Q o E
+        glm::vec3 luz1Rotada = glm::vec3(rotacion * glm::vec4(lightPos, 1.0f));
+        glm::vec3 luz2Rotada = glm::vec3(rotacion * glm::vec4(lightPos2, 1.0f));
+        //                                                      
+        
         // Primera luz . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
         GLint lightPosLoc = glGetUniformLocation(lightingShader.Program, "light.position"); //se carga el shader en la posicion
         GLint viewPosLoc = glGetUniformLocation(lightingShader.Program, "viewPos");         // y vista
-        glUniform3f(lightPosLoc, lightPos.x + movelightPos, lightPos.y + movelightPos, lightPos.z + movelightPos);
-                                            //^suma la variable para poder cambiar la posicion para cada eje
+            //glUniform3f(lightPosLoc, lightPos.x + movelightPos, lightPos.y + movelightPos, lightPos.z + movelightPos);
+                                            //^suma la variable para poder cambiar la posicion para cada eje por igual
+        glUniform3f(lightPosLoc, luz1Rotada.x, luz1Rotada.y, luz1Rotada.z);                 
+                //^^^nueva posicion durante la rotación^^^
         glUniform3f(viewPosLoc, camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z);
         // Set lights properties - - - - - - - - - - - - - - - - - - - - - - - 
         glUniform3f(glGetUniformLocation(lightingShader.Program, "light.ambient"), 0.2f, 0.2f, 0.2f);       //Para cada 
@@ -309,8 +393,9 @@ int main()
         //Config Segunda Luz (parámetros diferentes) ? . . . . . . . . . . . . . . . . . . . . . . .
         GLint lightPosLoc2 = glGetUniformLocation(lightingShader.Program, "light2.position");
         //GLint viewPosLoc = glGetUniformLocation(lightingShader.Program, "viewPos");         // y vista ya no hace falta
-        glUniform3f(lightPosLoc2, lightPos2.x + movelightPos2x, lightPos2.y + movelightPos2y, lightPos2.z + movelightPos2z);
+            //glUniform3f(lightPosLoc2, lightPos2.x + movelightPos2x, lightPos2.y + movelightPos2y, lightPos2.z + movelightPos2z);
                 // Quise hacer que la luz 2 se moviera con mas libertad
+        glUniform3f(lightPosLoc2, luz2Rotada.x, luz2Rotada.y, luz2Rotada.z);                //nueva posicion durante la rotación
         glUniform3f(glGetUniformLocation(lightingShader.Program, "light2.ambient"), 0.15f, 0.15f, 0.15f);       //Que tan iluminado es
         glUniform3f(glGetUniformLocation(lightingShader.Program, "light2.diffuse"), 0.9f, 0.0f, 0.9843f);       //""Color""
         glUniform3f(glGetUniformLocation(lightingShader.Program, "light2.specular"), 0.1f, 0.1f, 0.1f);         //Reflejo
@@ -422,8 +507,33 @@ int main()
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         //glEnable(GL_BLEND);                                     //Agregar la
         //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);      //transparencia
+        glBindVertexArray(VAO);
         cuarto.Draw(lightingShader);                    //cuarto en OBJ     <---
         //glDisable(GL_BLEND);
+
+        model = glm::mat4(1.0f);                // <--- REINICIO DE MATRIZ
+        model = glm::rotate(model, glm::radians(-180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::translate(model, glm::vec3(-4.0f, 0.25f, 0.3f));
+        model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        glBindVertexArray(VAO);
+        fondo.Draw(lightingShader);                    //cuarto en OBJ     <---
+
+
+            ////Fondo 1 - - - - - - - - - - - - - - - - - - - - - - - - - -DERECHA
+            //lampShader.Use();
+            //GLint modelLoc = glGetUniformLocation(lampShader.Program, "model");
+            //model = glm::mat4(1.0f);					// <--- REINICIO DE MATRIZ
+            //model = glm::translate(model, glm::vec3(9.0f, 0.0f, 0.0f));
+            //model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+            ////
+            //glBindTexture(GL_TEXTURE_2D, texture3);
+            ////se actualizaa ÚNICAMENTE el uniform 'modelLoc' en el shader para esta nueva posición
+            //glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+            ////
+            //glBindVertexArray(VAO);
+            //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(25 * sizeof(unsigned int)));/////////////////
+            //glBindVertexArray(0);
 
             //prueba de los modelos de luna y sol
             //model = glm::mat4(1.0f);                // <--- REINICIO DE MATRIZ
@@ -474,6 +584,7 @@ int main()
         // LUNA = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
         lampshader.Use();
         model = glm::mat4(1.0f);                // <--- REINICIO DE MATRIZ
+        model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(movelightRot), glm::vec3(0.0f, 0.0f, 1.0f));        //Punto de giro
         //model = glm::translate(model, glm::vec3(7.0f, 0.0f, 0.0f));                                 //Posision donde estará inicialmente
         model = glm::translate(model, lightPos);                     //Posision donde estará inicialmente
@@ -482,7 +593,7 @@ int main()
             //model = glm::mat4(1.0f);
             //model = glm::translate(model, lightPos + movelightPos);                 //posición de la luz 2
             ////model = glm::translate(model, glm::vec3(-0.75f + movelightPos2x, 0.7f + movelightPos2y, 1.5f + movelightPos2z));        //op1
-        model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
+        model = glm::scale(model, glm::vec3(0.06f, 0.06f, 0.06f));
         glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         glBindVertexArray(VAO);
         luna.Draw(lampshader);                          //luna en OBJ     <---
@@ -490,6 +601,7 @@ int main()
         // SOL  = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
         lampshader.Use();
         model = glm::mat4(1.0f);                // <--- REINICIO DE MATRIZ
+        model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(movelightRot), glm::vec3(0.0f, 0.0f, 1.0f));        //Punto de giro
         //model = glm::translate(model, glm::vec3(-7.0f, 0.0f, 0.0f));                                //Posision donde estará inicialmente
         model = glm::translate(model, lightPos2);                                //Posision donde estará inicialmente
@@ -498,7 +610,7 @@ int main()
             //model = glm::mat4(1.0f);
             ////model = glm::translate(model, lightPos2 + movelightPos);                 //posición de la luz 2
             //model = glm::translate(model, glm::vec3(-0.75f + movelightPos2x, 0.7f + movelightPos2y, 1.5f + movelightPos2z));        //op1
-        model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
+        model = glm::scale(model, glm::vec3(0.09f, 0.09f, 0.09f));
         glUniformMatrix4fv(glGetUniformLocation(lampshader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         glBindVertexArray(VAO);
         sol.Draw(lampshader);                           //sol en OBJ     <---
@@ -610,11 +722,11 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
     //Movimiento para la rotacion Sol y Luna _________________________________
     if (keys[GLFW_KEY_Q])       //ANTIHORARIO
     {
-        movelightRot -= 5.0f;
+        movelightRot += 5.0f;
     }
     if (keys[GLFW_KEY_E])       //HORARIO
     {
-        movelightRot += 5.0f;
+        movelightRot -= 5.0f;
     }
 
 }
