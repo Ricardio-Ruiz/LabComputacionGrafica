@@ -4,7 +4,7 @@
 //Practica #8 											  Ruiz Vargas Ricardo
 //Fecha de entrega: 10 de octubre de 2026 							316226068
 //
-//
+// 
 
 // Std. Includes
 #include <string>
@@ -386,7 +386,7 @@ int main()
         glUniform3f(viewPosLoc, camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z);
         // Set lights properties - - - - - - - - - - - - - - - - - - - - - - - 
         glUniform3f(glGetUniformLocation(lightingShader.Program, "light.ambient"), 0.2f, 0.2f, 0.2f);       //Para cada 
-        glUniform3f(glGetUniformLocation(lightingShader.Program, "light.diffuse"), 0.0f, 1.0f, 0.9843f);    //una de las
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "light.diffuse"), 0.5529f, 0.7725f, 0.9412f);    //una de las
         glUniform3f(glGetUniformLocation(lightingShader.Program, "light.specular"), 0.2f, 0.2f, 0.4f);      //componentes
 
 
@@ -397,7 +397,7 @@ int main()
                 // Quise hacer que la luz 2 se moviera con mas libertad
         glUniform3f(lightPosLoc2, luz2Rotada.x, luz2Rotada.y, luz2Rotada.z);                //nueva posicion durante la rotación
         glUniform3f(glGetUniformLocation(lightingShader.Program, "light2.ambient"), 0.15f, 0.15f, 0.15f);       //Que tan iluminado es
-        glUniform3f(glGetUniformLocation(lightingShader.Program, "light2.diffuse"), 0.9f, 0.0f, 0.9843f);       //""Color""
+        glUniform3f(glGetUniformLocation(lightingShader.Program, "light2.diffuse"), 0.9608f, 0.2863f, 0.1529f);       //""Color""
         glUniform3f(glGetUniformLocation(lightingShader.Program, "light2.specular"), 0.1f, 0.1f, 0.1f);         //Reflejo
 
 
