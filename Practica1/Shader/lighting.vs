@@ -14,9 +14,7 @@ uniform mat4 projection;
 void main()
 {
     gl_Position = projection * view *  model * vec4(position, 1.0f);
-    FragPos = vec3(model * vec4(position, 1.0f));       //Se calculala posición de fragmentos que vamos a tener
-                                                        //entre la vista del modelo multiplicado por la posición que va a tener
-    Normal = mat3(transpose(inverse(model))) * normal;  //Obtenemos la transpuesta del inverso que tenemos del modelo
-                                                        //multiplicado por el normal = recibimos como coordenadas
+    FragPos = vec3(model * vec4(position, 1.0f));
+    Normal = mat3(transpose(inverse(model))) * normal;
     TexCoords = texCoords;
 }
