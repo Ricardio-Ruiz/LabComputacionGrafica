@@ -1,15 +1,15 @@
 #version 330 core
 
-#define NUMBER_OF_POINT_LIGHTS 4        //cant de luces
+#define NUMBER_OF_POINT_LIGHTS 1
 
 struct Material
 {
     sampler2D diffuse;
     sampler2D specular;
-    float shininess;    //brillo
+    float shininess;
 };
 
-struct DirLight             //Direccional
+struct DirLight
 {
     vec3 direction;
     
@@ -18,7 +18,7 @@ struct DirLight             //Direccional
     vec3 specular;
 };
 
-struct PointLight           //Puntual
+struct PointLight
 {
     vec3 position;
     
@@ -31,7 +31,7 @@ struct PointLight           //Puntual
     vec3 specular;
 };
 
-struct SpotLight            //Reflector
+struct SpotLight
 {
     vec3 position;
     vec3 direction;
@@ -58,7 +58,7 @@ uniform DirLight dirLight;
 uniform PointLight pointLights[NUMBER_OF_POINT_LIGHTS];
 uniform SpotLight spotLight;
 uniform Material material;
-uniform int transparency;       //Para reconocer las texturas con transparencia
+uniform int transparency;
 
 // Function prototypes
 vec3 CalcDirLight( DirLight light, vec3 normal, vec3 viewDir );
@@ -83,13 +83,13 @@ void main( )
     // Spot light
     result += CalcSpotLight( spotLight, norm, FragPos, viewDir );
  	
-    color = vec4( result,texture(material.diffuse, TexCoords).rgb ); 
-	  if(color.a < 0.1 && transparency==1)      //activsción del canal Alfa para la transparencia
+    color = vec4( result,texture(material.diffuse, TexCoords).rgb );
+	  if(color.a < 0.1 && transparency==1)
         discard;
 
 }
 
-// Calculates the color when using a directional light. DIRECCIONAL--------------------------------
+// Calculates the color when using a directional light.
 vec3 CalcDirLight( DirLight light, vec3 normal, vec3 viewDir )
 {
     vec3 lightDir = normalize( -light.direction );
@@ -109,7 +109,7 @@ vec3 CalcDirLight( DirLight light, vec3 normal, vec3 viewDir )
     return ( ambient + diffuse + specular );
 }
 
-// Calculates the color when using a point light. PUNTUAL -----------------------------------------
+// Calculates the color when using a point light.
 vec3 CalcPointLight( PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir )
 {
     vec3 lightDir = normalize( light.position - fragPos );
@@ -137,7 +137,7 @@ vec3 CalcPointLight( PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir )
     return ( ambient + diffuse + specular );
 }
 
-// Calculates the color when using a spot light. REFLECTOR ----------------------------------------
+// Calculates the color when using a spot light.
 vec3 CalcSpotLight( SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir )
 {
     vec3 lightDir = normalize( light.position - fragPos );
