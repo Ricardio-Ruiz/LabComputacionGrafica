@@ -1,8 +1,8 @@
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
-//Previo #10 											  Ruiz Vargas Ricardo
-//Fecha de entrega: 20 de octubre de 2026 							316226068
+//Practica #10 											  Ruiz Vargas Ricardo
+//Fecha de entrega: 25 de octubre de 2026 							316226068
 //
 // 
 
@@ -37,6 +37,7 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 void MouseCallback(GLFWwindow *window, double xPos, double yPos);
 void DoMovement();
 void Animation();
+void Animation2();
 
 // Window dimensions
 const GLuint WIDTH = 800, HEIGHT = 600;
@@ -113,9 +114,20 @@ bool AnimBall = false;								// <-- Determina cuando se activa o desactiva la a
 
 //Previo10 - - - - - - - - - - - - - - - - - - - 
 //variables para el rebote solicitado
-float posY = 0.5f;       //altura inicial (se ajustaria según la altura de la nariz del perro)		<---
+float posY = 1.0f;       //altura inicial (se ajustaria según la altura de la nariz del perro)		<---
 bool subiendo = true;    //controlar dirección
 // - - - - - - - - - - - - - - - - - - - - - - - 
+
+
+//Practica10 - - - - - - - - - - - - - - - - - - - 
+float rotDog = 0;									//rotacion
+bool AnimDog = false;								// <-- Determina cuando se activa o desactiva la animación
+bool subiendo2 = true;    //controlar dirección
+float posY2 = 1.0f;       //altura inicial (se ajustaria según la altura de la nariz del perro)		<---
+
+float movelightRot = 0.0f;
+// - - - - - - - - - - - - - - - - - - - - - - - 
+
 
 
 // Deltatime										//definicion del Intervalo de tiempo
@@ -214,6 +226,7 @@ int main()
 		glfwPollEvents();
 		DoMovement();
 		Animation();				//función que contiene la animacion
+		Animation2();
 
 		// Clear the colorbuffer
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -293,7 +306,8 @@ int main()
 		glm::mat4 model(1);
 
 	
-		
+		// MODELOS / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
+		// / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
 		//Carga de modelo 
         view = camera.GetViewMatrix();	
 		model = glm::mat4(1);
@@ -301,17 +315,22 @@ int main()
 		Piso.Draw(lightingShader);
 
 		model = glm::mat4(1);
+		model = glm::rotate(model, glm::radians(rotDog), glm::vec3(0.0f, 1.0f, 0.0f));	//pivotr
+		model = glm::translate(model, glm::vec3(-1.5f, 0.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
 		Dog.Draw(lightingShader);
 
 		model = glm::mat4(1);
+		model = glm::rotate(model, glm::radians(rotBall), glm::vec3(0.0f, -1.0f, 0.0f));			//parte de rotación de la pelota, como en practicas anteiores
+		//model = glm::rotate(model, glm::radians(movelightRot), glm::vec3(0.0f, 0.0f, 1.0f));	//pivote
+		//model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
 		glEnable(GL_BLEND);//Avtiva la funcionalidad para trabajar el canal alfa
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
 		//
-		model = glm::translate(model, glm::vec3(0.06f, posY, -0.28f));								//para mover en eje Y con posY
+		model = glm::translate(model, glm::vec3(1.5, posY, -0.28f));								//para mover en eje Y con posY
 		//
 		//model = glm::rotate(model, glm::radians(rotBall), glm::vec3(0.0f, 1.0f, 0.0f));			//parte de rotación de la pelota, como en practicas anteiores
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));						//se envia al shader
@@ -457,9 +476,12 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 	if (keys[GLFW_KEY_N])
 	{
 		AnimBall = !AnimBall;			//cambia el booleano
+		AnimDog = !AnimDog;
 		
 	}
 }
+
+
 void Animation() {			 
 	if (AnimBall)						//si está activs ls vsriable / es verdadera
 	{
@@ -471,15 +493,77 @@ void Animation() {
 		float alturadLuz = pointLightPositions[0].y;		//Limite superior, altura de la luz <---
 
 		if (subiendo) {										//si está activs ls vsriable / es verdadera = sube
-			posY += 0.024f;									//es La VelocidaD de subida
+			posY += 0.02f;									//es La VelocidaD de subida
 			if (posY >= alturadLuz) {
 				subiendo = false;							//aqui toca la luz, por lo que cambia de direccion
 			}
 		}
 		else {
-			posY -= 0.024f;									//es la velocidad de bajada
-			if (posY <= 0.5f) {								//Limite inferior (nariz perro) <---
+			posY -= 0.009f;									//es la velocidad de bajada
+			if (posY <= 1.0f) {								//Limite inferior (nariz perro) <---
 				subiendo = true;							//vuelve a tocar la nariz, va pa arriba de nuevo
+			}
+		}
+		// - - - - - - - -- - -- - - - - - - - - 
+
+
+	}
+	else
+	{
+		//rotBall = 0.0f;
+	}
+
+	//if (AnimDog)						//si está activs ls vsriable / es verdadera
+	//{
+	//	rotDog += 0.2f;
+	//	//printf("%f", rotBall);			//imprime en consola la variable
+
+
+	//	//traslacion en  Y
+	//			//Limite superior, altura minima de la pélota <---
+
+	//	if (subiendo) {										//si está activs ls vsriable / es verdadera = sube
+	//		posY += 0.02f;									//es La VelocidaD de subida
+	//		if (posY >= 1.0) {
+	//			subiendo = false;							//aqui toca la luz, por lo que cambia de direccion
+	//		}
+	//	}
+	//	else {
+	//		posY -= 0.005f;									//es la velocidad de bajada
+	//		if (posY <= 0.0f) {								//Limite inferior (piso) <---
+	//			subiendo = true;							//vuelve a tocar la nariz, va pa arriba de nuevo
+	//		}
+	//	}
+	//	// - - - - - - - -- - -- - - - - - - - - 
+
+
+	//}
+	//else
+	//{
+	//	//rotBall = 0.0f;
+	//}
+}
+
+void Animation2() {
+	if (AnimDog)						//si está activs ls vsriable / es verdadera
+	{
+		rotDog += 1.2f;
+		//printf("%f", rotBall);			//imprime en consola la variable
+
+
+		//traslacion en  Y
+				//Limite superior, altura minima de la pélota <---
+
+		if (subiendo2) {										//si está activs ls vsriable / es verdadera = sube
+			posY2 += 0.02f;									//es La VelocidaD de subida
+			if (posY2 >= 1.0) {
+				subiendo2 = false;							//aqui toca la luz, por lo que cambia de direccion
+			}
+		}
+		else {
+			posY2 -= 0.005f;									//es la velocidad de bajada
+			if (posY2 <= 0.0f) {								//Limite inferior (piso) <---
+				subiendo2 = true;							//vuelve a tocar la nariz, va pa arriba de nuevo
 			}
 		}
 		// - - - - - - - -- - -- - - - - - - - - 
