@@ -2,9 +2,10 @@
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
 //Practica #10 											  Ruiz Vargas Ricardo
-//Fecha de entrega: 25 de octubre de 2026 							316226068
+//Fecha de entrega: 23 de octubre de 2026 							316226068
 //
-// 
+//
+
 
 #include <iostream>
 #include <cmath>
@@ -109,21 +110,22 @@ float vertices[] = {
 
 glm::vec3 Light1 = glm::vec3(0);
 //Anim
-float rotBall = 0;									//rotacion
+float rotBall = 0;									//rotacion pelota
 bool AnimBall = false;								// <-- Determina cuando se activa o desactiva la animación
+
 
 //Previo10 - - - - - - - - - - - - - - - - - - - 
 //variables para el rebote solicitado
-float posY = 1.0f;       //altura inicial (se ajustaria según la altura de la nariz del perro)		<---
-bool subiendo = true;    //controlar dirección
+float posY = 1.0f;				//altura inicial (se ajustaria según la altura de la nariz del perro)		<---
+bool subiendo = true;			//controlar dirección
 // - - - - - - - - - - - - - - - - - - - - - - - 
 
-
 //Practica10 - - - - - - - - - - - - - - - - - - - 
-float rotDog = 0;									//rotacion
+float rotDog = 0;									//rotacion perro
 bool AnimDog = false;								// <-- Determina cuando se activa o desactiva la animación
-bool subiendo2 = true;    //controlar dirección
-float posY2 = 1.0f;       //altura inicial (se ajustaria según la altura de la nariz del perro)		<---
+float posY2 = 0.0f;				//altura inicial (se ajustaria según la altura de la nariz del perro)		<---
+float saltoDog = 0.0f;				//para la rotacion del perro en su salto									<---
+bool subiendo2 = true;			//controlar dirección
 
 float movelightRot = 0.0f;
 // - - - - - - - - - - - - - - - - - - - - - - - 
@@ -146,7 +148,7 @@ int main()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);*/
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Previo 10 - Ricardo_Ruiz_Vargas", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Practica 10 - Ricardo_Ruiz_Vargas", nullptr, nullptr);
 
 	if (nullptr == window)
 	{
@@ -226,7 +228,7 @@ int main()
 		glfwPollEvents();
 		DoMovement();
 		Animation();				//función que contiene la animacion
-		Animation2();
+		//Animation2();
 
 		// Clear the colorbuffer
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -314,12 +316,18 @@ int main()
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Piso.Draw(lightingShader);
 
-		model = glm::mat4(1);
-		model = glm::rotate(model, glm::radians(rotDog), glm::vec3(0.0f, 1.0f, 0.0f));	//pivotr
-		model = glm::translate(model, glm::vec3(-1.5f, 0.0f, 0.0f));
+
+		model = glm::mat4(1);							// |/ Para que coincida la caida de la pelota con la cabeza
+		model = glm::rotate(model, glm::radians(rotDog - 50.0f), glm::vec3(0.0f, 1.0f, 0.0f));	//pivotr
+		model = glm::translate(model, glm::vec3(1.5f, posY2, 0.0f));
+		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		//
+		model = glm::rotate(model, glm::radians(saltoDog), glm::vec3(-1.0f, 0.0f, 0.0f));		//Para que haga el salto con inclinacion
+		//
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
 		Dog.Draw(lightingShader);
+
 
 		model = glm::mat4(1);
 		model = glm::rotate(model, glm::radians(rotBall), glm::vec3(0.0f, -1.0f, 0.0f));			//parte de rotación de la pelota, como en practicas anteiores
@@ -330,7 +338,7 @@ int main()
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
 		//
-		model = glm::translate(model, glm::vec3(1.5, posY, -0.28f));								//para mover en eje Y con posY
+		model = glm::translate(model, glm::vec3(1.3, posY, 0.0f));								//para mover en eje Y con posY
 		//
 		//model = glm::rotate(model, glm::radians(rotBall), glm::vec3(0.0f, 1.0f, 0.0f));			//parte de rotación de la pelota, como en practicas anteiores
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));						//se envia al shader
@@ -338,6 +346,8 @@ int main()
 		glDisable(GL_BLEND);  //Desactiva el canal alfa 
 		glBindVertexArray(0);
 	
+
+
 
 		// Also draw the lamp object, again binding the appropriate shader
 		lampShader.Use();
@@ -482,69 +492,124 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 }
 
 
-void Animation() {			 
+void Animation() {			
+	// ANIMACION DE PELOTA - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	if (AnimBall)						//si está activs ls vsriable / es verdadera
 	{
-		rotBall += 0.2f;
+		rotBall += 0.4f;
 		//printf("%f", rotBall);			//imprime en consola la variable
 
 
-		//traslacion en  Y
-		float alturadLuz = pointLightPositions[0].y;		//Limite superior, altura de la luz <---
+		//traslacion en  Y - - - - - - - - - - - - - - 
+		
+		//-->Versión con ifs
+		//float alturadLuz = pointLightPositions[0].y;		//Limite superior, altura de la luz <---
 
-		if (subiendo) {										//si está activs ls vsriable / es verdadera = sube
-			posY += 0.02f;									//es La VelocidaD de subida
-			if (posY >= alturadLuz) {
-				subiendo = false;							//aqui toca la luz, por lo que cambia de direccion
-			}
-		}
-		else {
-			posY -= 0.009f;									//es la velocidad de bajada
-			if (posY <= 1.0f) {								//Limite inferior (nariz perro) <---
-				subiendo = true;							//vuelve a tocar la nariz, va pa arriba de nuevo
-			}
-		}
+		//if (subiendo) {										//si está activs ls vsriable / es verdadera = sube
+		//	posY += 0.02f;									//es La VelocidaD de subida
+		//	if (posY >= alturadLuz) {
+		//		subiendo = false;							//aqui toca la luz, por lo que cambia de direccion
+		//	}
+		//}
+		//else {
+		//	posY -= 0.009f;									//es la velocidad de bajada
+		//	if (posY <= 1.0f) {								//Limite inferior (nariz perro) <---
+		//		subiendo = true;							//vuelve a tocar la nariz, va pa arriba de nuevo
+		//	}
+		//}
 		// - - - - - - - -- - -- - - - - - - - - 
+		
+		//-->Version son el seno aaa
+				//rebote trigonometrico del seno dependiente de la rotación de la pelota
+		float alturaNariz = 1.0f;
+		float alturadLuz = 1.5f;
 
+		posY = alturaNariz + alturadLuz * abs(sin(glm::radians(rotBall * 1.5f)));
+				//^ los límites fisicos (alturaNariz y alturadLuz) la encajan en el escenario
+										//^abs - Como la ola del seno baja hasta -1, lapelota atravesaria el piso. El valor abs 
+										// convierte todo lo negativo en positivo, por eso al llegar a 0, en lugar de seguiir 
+										// bajando, la trayectoria "rebota" y vuelve a subir hacia 1
+				
+											//^sin - para crear la onda seno que sube y baja de forma limpia
+
+																//^rotBall * 1.5 - son los grados que avanza la pelota (0 a 360)
+																// al multiplicarlo por 1.5, es como si se dividiera en 3 partes
+																// esto hace que cada 120 grados, lo que obliga a la pelota a estar 
+																// en su punto mas bajo exactamente esas tres veces por cada vuelta 
 
 	}
 	else
 	{
 		//rotBall = 0.0f;
 	}
-
-	//if (AnimDog)						//si está activs ls vsriable / es verdadera
-	//{
-	//	rotDog += 0.2f;
-	//	//printf("%f", rotBall);			//imprime en consola la variable
-
-
-	//	//traslacion en  Y
-	//			//Limite superior, altura minima de la pélota <---
-
-	//	if (subiendo) {										//si está activs ls vsriable / es verdadera = sube
-	//		posY += 0.02f;									//es La VelocidaD de subida
-	//		if (posY >= 1.0) {
-	//			subiendo = false;							//aqui toca la luz, por lo que cambia de direccion
-	//		}
-	//	}
-	//	else {
-	//		posY -= 0.005f;									//es la velocidad de bajada
-	//		if (posY <= 0.0f) {								//Limite inferior (piso) <---
-	//			subiendo = true;							//vuelve a tocar la nariz, va pa arriba de nuevo
-	//		}
-	//	}
-	//	// - - - - - - - -- - -- - - - - - - - - 
+	
+	// ANIMACION DE PERRO  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	if (AnimDog)						//si está activs ls vsriable / es verdadera
+	{
+		rotDog += 0.8f;
+		//printf("%f", rotBall);			//imprime en consola la variable
 
 
-	//}
-	//else
-	//{
-	//	//rotBall = 0.0f;
-	//}
+		////traslacion en  Y - - - - - - - - - - - - - 
+		//		//Limite superior, altura minima de la pélota <---
+
+		//if (subiendo) {										//si está activs ls vsriable / es verdadera = sube
+		//	posY += 0.02f;									//es La VelocidaD de subida
+		//	if (posY >= 1.0) {
+		//		subiendo = false;							//aqui toca la luz, por lo que cambia de direccion
+		//	}
+		//}
+		//else {
+		//	posY -= 0.005f;									//es la velocidad de bajada
+		//	if (posY <= 0.0f) {								//Limite inferior (piso) <---
+		//		subiendo = true;							//vuelve a tocar la nariz, va pa arriba de nuevo
+		//	}
+		//}
+		//// - - - - - - - -- - -- - - - - - - - - 
+
+		//--> salto con coseno para que coincida con el seno de la pelota
+		float ondadSalto = abs(cos(glm::radians(rotBall * 1.5f)));
+												//^ por eso se tien que sincronizar con rotBall para que 
+												// salte justo cuando la pelota cae, gracias al coseno
+
+		posY2 = glm::max(0.0f, ondadSalto - 0.8f) * 3.0f; 
+						//^ 0.0f - se queda en 0.0f el 80% del tiempo. solo salta en los picos
+						// convierte cualquier valor negativo en 0
+
+								//^ondaSalto - 0.8f - hace que se desplace la curva trigonometrica del cosno 
+								// hacia abajo, para que solo la "punta" de la ola, el 20% superior, se tenga 
+								// con un valor positivo (de 0.0 a 0.2). Todo lo demás se vuelve negativo para
+								// que el perro siga en el suelo plano
+
+													//^5.0 - Al multiplicarla por 5, ese pequeno pico se estira 
+													// para alcanzar una altura mayor de 1.0 en el eje Y
+
+		//--> movimiento del perro en el salto
+		if (posY2 > 0.0f) {
+			saltoDog = -sin(glm::radians(rotBall * 9.0f)) * 40.0f;
+								//^-sen y rotBall - para que el perro se eleve mientras la pelota cae
+							
+												//^3.0 -  El multiplicador captura la pendiente de la onda para 
+												// los saltos definidos. Menor valor hace que el perro solo se 
+												// mueva poco en el aire; a mayor numero hace que el perro al 
+												// brincar, de un cabezazo y se quiera ajustar para caer
+															
+															//^40.0 multiplicar por 40.0f para limitar la inclinacion 
+															// máxima a unos 40 grados pa arriba y pa abajo
+		}
+		else {
+			saltoDog = 0.0f; // Asegura que se mantenga recto al tocar el piso
+		}
+
+
+	}
+	else
+	{
+		//rotDog = 0.0f;
+	}
 }
 
-void Animation2() {
+/*void Animation2() {
 	if (AnimDog)						//si está activs ls vsriable / es verdadera
 	{
 		rotDog += 1.2f;
@@ -574,7 +639,7 @@ void Animation2() {
 	{
 		//rotBall = 0.0f;
 	}
-}
+}*/
 
 void MouseCallback(GLFWwindow *window, double xPos, double yPos)
 {
