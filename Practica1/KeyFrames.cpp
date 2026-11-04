@@ -1,8 +1,8 @@
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
-//Previo #12 											  Ruiz Vargas Ricardo
-//Fecha de entrega: 02 de noviembre de 2026 						316226068
+//Practica #12 											  Ruiz Vargas Ricardo
+//Fecha de entrega: 06 de noviembre de 2026 						316226068
 //
 // 
 
@@ -31,6 +31,10 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "Model.h"
+
+
+	//	Necesarioa para laa lectur/escritur de archivos en C++
+#include <fstream>
 
 
 // Function prototypes
@@ -126,15 +130,17 @@ float tail = 0.0f;
 
 float body = 0.0f;
 
+float bodyDead = 0.0f;
+
 
 
 //KeyFrames /*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+				
 // <--- Para manejar las posiciones independientemente por frame
 float dogPosX , dogPosY , dogPosZ  ;
 
-// /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+ VARIAVBLES
+// /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+ VARIAVBLES ***
 #define MAX_FRAMES 20					// <--- Numero maximo de keyfframes que se van a usar !!!
-int i_max_steps = 190;
+int i_max_steps = 150;
 int i_curr_steps = 0;
 typedef struct _frame {
 	
@@ -165,6 +171,9 @@ typedef struct _frame {
 	float body;		//cuerpo anim
 	float bodyInc;
 
+	float bodyDead;
+	float bodyDeadInc;
+
 }FRAME;
 
 FRAME KeyFrame[MAX_FRAMES];
@@ -172,7 +181,7 @@ int FrameIndex = 0;		//	introducir datos
 bool play = false;
 int playIndex = 0;		//	en que punto de la animaçion se encuentra
 
-// /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+ GUARDA FRAME
+// /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+ GUARDA FRAME ***
 void saveFrame(void)	//	funcion que guarda toda la informacion 
 {
 
@@ -195,10 +204,12 @@ void saveFrame(void)	//	funcion que guarda toda la informacion
 
 	KeyFrame[FrameIndex].body = body;
 
+	KeyFrame[FrameIndex].bodyDead = bodyDead;
+
 	FrameIndex++;
 }
 
-// /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+ RESETEO
+// /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+ RESETEO ***
 void resetElements(void)	//	Regresa a la posicion inicial
 {
 	dogPosX = KeyFrame[0].dogPosX;
@@ -218,9 +229,11 @@ void resetElements(void)	//	Regresa a la posicion inicial
 
 	body = KeyFrame[0].body;
 
+	bodyDead = KeyFrame[0].bodyDead;
+
 }
 
-// /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+ INTERPOLACION
+// /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+  /*-+ INTERPOLACION ***
 void interpolation(void)	//	interpolacion de tiempo entre frames
 {
 	// |/ que tan fluido será la anim.
@@ -241,8 +254,57 @@ void interpolation(void)	//	interpolacion de tiempo entre frames
 
 	KeyFrame[playIndex].bodyInc = (KeyFrame[playIndex + 1].body - KeyFrame[playIndex].body) / i_max_steps;
 
+	KeyFrame[playIndex].bodyDeadInc = (KeyFrame[playIndex + 1].bodyDead - KeyFrame[playIndex].bodyDead) / i_max_steps;
+
+
 }
 // /*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+
+
+
+//Para guardar los frames en un txt /-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+				
+void saveFramesToFile() {														//Para guardar en el archivo ***
+	std::ofstream file("animacion_perro.txt");
+	if (file.is_open())	{ 
+		file << FrameIndex << "\n"; //guard la cantidad total de frames registrados
+		for (int i = 0; i < FrameIndex; i++) {
+					//escribe las variables por cada frame en una sola line
+			file << KeyFrame[i].dogPosX << " " << KeyFrame[i].dogPosY << " " << KeyFrame[i].dogPosZ << " "
+				<< KeyFrame[i].rotDog << " " << KeyFrame[i].body << " " << KeyFrame[i].bodyDead << " "
+				<< KeyFrame[i].head << " " << KeyFrame[i].tail << " "
+				<< KeyFrame[i].FR_Leg << " " << KeyFrame[i].FL_Leg << " "
+				<< KeyFrame[i].BR_Leg << " " << KeyFrame[i].BL_Leg << "\n";
+		}
+		file.close();
+		printf("Animacion guardada en animacion_perro.txt con %d frames :D \n", FrameIndex);
+	}
+}
+// aaa!!!
+void loadFramesFromFile() {														//Para cargaar el archivo ***
+	std::ifstream file("animacion_perro.txt");
+	if (file.is_open()) {
+		file >> FrameIndex; // Lee la cantidad de frames para saber el límite
+		for (int i = 0; i < FrameIndex; i++) {
+					// Lee los datos exactamente en el mismo orden que se guardaron
+			file >> KeyFrame[i].dogPosX >> KeyFrame[i].dogPosY >> KeyFrame[i].dogPosZ
+				>> KeyFrame[i].rotDog >> KeyFrame[i].body >> KeyFrame[i].bodyDead
+				>> KeyFrame[i].head >> KeyFrame[i].tail
+				>> KeyFrame[i].FR_Leg >> KeyFrame[i].FL_Leg
+				>> KeyFrame[i].BR_Leg >> KeyFrame[i].BL_Leg;
+		}
+		file.close();
+		resetElements(); // Actualiza el perro a la pose del Frame 0
+		printf("Animacion cargada exitosamente jjaja B) \n");
+	}
+	else {
+		printf("No se encontro el archivo animacion_perro.txt wtf :,( \n");
+	}
+}
+// /*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+/*-+
+
+
+
+
+
 
 
 // Deltatime
@@ -262,7 +324,7 @@ int main()
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
 	//GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Animacion por Keyframes", nullptr, nullptr);
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Practica 11 - Ricardo_Ruiz_Vargas", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Practica 12 - Ricardo_Ruiz_Vargas", nullptr, nullptr);
 
 	if (nullptr == window)
 	{
@@ -342,6 +404,9 @@ int main()
 
 		KeyFrame[i].body = 0;
 		KeyFrame[i].bodyInc = 0;
+
+		KeyFrame[i].bodyDead = 0;
+		KeyFrame[i].bodyDeadInc = 0;
 
 	}
 
@@ -481,6 +546,7 @@ int main()
 		modelTemp = model = glm::translate(model, glm::vec3(dogPosX, dogPosY, dogPosZ));
 		modelTemp = model = glm::rotate(model, glm::radians(rotDog), glm::vec3(0.0f, 1.0f, 0.0f));
 		modelTemp = model = glm::rotate(model, glm::radians(body), glm::vec3(1.0f, 0.0f, 0.0f));		// <-- Pa inclinar cuerpo
+		modelTemp = model = glm::rotate(model, glm::radians(bodyDead), glm::vec3(0.0f, 0.0f, 1.0f));	// <-- Pa hacer de muerto
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		DogBody.Draw(lightingShader);
 		
@@ -661,6 +727,19 @@ void DoMovement()
 	if (keys[GLFW_KEY_Q])		//bajar el cuerpo
 	{	dogPosY -= 0.01f;	}
 
+	// Cuerpo (Muertito)
+	if (keys[GLFW_KEY_J])
+	{	bodyDead += 1.0f;	}
+	if (keys[GLFW_KEY_M])
+	{	bodyDead -= 1.0f;	}
+
+		//Para guardar y cargar el archivo de animacion
+	if (keys[GLFW_KEY_F1])							//F1 guarda anim
+	{	saveFramesToFile();		}
+
+	if (keys[GLFW_KEY_F2])							//F2 carga la anim
+	{	loadFramesFromFile();	}
+
 
 
 	// Camera controls ////////////////////////////////////////////////////////////////
@@ -821,6 +900,8 @@ void Animation() {
 			tail += KeyFrame[playIndex].tailInc;
 
 			body += KeyFrame[playIndex].bodyInc;
+
+			bodyDead += KeyFrame[playIndex].bodyDeadInc;
 
 			i_curr_steps++;
 		}
